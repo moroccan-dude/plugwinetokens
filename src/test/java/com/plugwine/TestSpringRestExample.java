@@ -29,7 +29,8 @@ public class TestSpringRestExample {
 		//object in the list and hence convert it to default JSON object type LinkedHashMap
 		List<Object> tokens = restTemplate.getForObject(SERVER_URI+TokensURIConstants.GET_ALL_TOKENS, List.class);
 		System.out.println(tokens.size());
-		for(Object elem : tokens){
+		for(Object elem : tokens)
+		{
 			System.out.println("elem:"+elem);
 		}
 	}
