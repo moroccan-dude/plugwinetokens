@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.plugwine.domain.model">
+    <class name="ApplicationVersionStageActivity" table="ApplicationVersionStageActivity">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="component" class="com.plugwine.domain.model.Component" fetch="select">
+            <column name="ComponentId" not-null="true" />
+        </many-to-one>
+        <many-to-one name="applicationVersionStage" class="com.plugwine.domain.model.ApplicationVersionStage" fetch="select">
+            <column name="ApplicationVersionStageId" not-null="true" />
+        </many-to-one>
+        <property name="serverId" type="int">
+            <column name="ServerId" not-null="true" />
+        </property>
+        <property name="workflowActivityId" type="com.plugwine.util.MSSQLUUIDUserType">
+            <column name="WorkflowActivityId" length="36" not-null="true" unique="true"/>
+        </property>
+        <set name="configurationVariableValues" table="ConfigurationVariableValue" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ApplicationVersionStageActivityId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.ConfigurationVariableValue" />
+        </set>
+    </class>
+</hibernate-mapping>

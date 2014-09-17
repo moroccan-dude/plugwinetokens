@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.plugwine.domain.model">
+    <class name="Component" table="Component">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="Name" not-null="true" unique="true" />
+        </property>
+        <property name="statusId" type="int">
+            <column name="StatusId" not-null="true" />
+        </property>
+        <property name="packageLocation" type="java.lang.String">
+            <column name="PackageLocation" not-null="true" />
+        </property>
+        <property name="fileExtensionFilter" type="java.lang.String">
+            <column name="FileExtensionFilter" not-null="true" />
+        </property>
+        <property name="deployerToolId" type="int">
+            <column name="DeployerToolId" not-null="true" />
+        </property>
+        <property name="command" type="java.lang.String">
+            <column name="Command" not-null="true" />
+        </property>
+        <property name="arguments" type="java.lang.String">
+            <column name="Arguments" not-null="true" />
+        </property>
+        <property name="timeout" type="int">
+            <column name="Timeout" not-null="true" />
+        </property>
+        <property name="variableReplacementModeId" type="int">
+            <column name="VariableReplacementModeId" not-null="true" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="Description" not-null="true" />
+        </property>
+        <property name="typeId" type="int">
+            <column name="TypeId" not-null="true" />
+        </property>
+        <property name="teamFoundationServerId" type="int">
+            <column name="TeamFoundationServerId" not-null="true" />
+        </property>
+        <property name="teamProjectCollectionId" type="int">
+            <column name="TeamProjectCollectionId" not-null="true" />
+        </property>
+        <property name="teamProject" type="java.lang.String">
+            <column name="TeamProject" not-null="true" />
+        </property>
+        <property name="buildDefinition" type="java.lang.String">
+            <column name="BuildDefinition" not-null="true" />
+        </property>
+        <property name="actionTypeId" type="int">
+            <column name="ActionTypeId" not-null="true" />
+        </property>
+        <property name="createdOn" type="timestamp">
+            <column name="CreatedOn" length="23" not-null="true" />
+        </property>
+        <property name="createdById" type="int">
+            <column name="CreatedById" not-null="true" />
+        </property>
+        <property name="modifiedOn" type="timestamp">
+            <column name="ModifiedOn" length="23" not-null="true" />
+        </property>
+        <property name="modifiedById" type="int">
+            <column name="ModifiedById" not-null="true" />
+        </property>
+        <property name="isDeleted" type="boolean">
+            <column name="IsDeleted" not-null="true" />
+        </property>
+        <property name="isPublishedByMicrosoft" type="boolean">
+            <column name="IsPublishedByMicrosoft" not-null="true" />
+        </property>
+        <set name="configurationVariables" table="ConfigurationVariable" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ComponentId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.ConfigurationVariable" />
+        </set>
+        <set name="applicationVersionStageActivities" table="ApplicationVersionStageActivity" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ComponentId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.ApplicationVersionStageActivity" />
+        </set>
+    </class>
+</hibernate-mapping>

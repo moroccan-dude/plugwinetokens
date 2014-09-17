@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:hibernate/hibernate.cfg.xml" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect.value}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql.value}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto.value}</prop>
+                <prop key="hibernate.connection.autocommit">${hibernate.connection.autocommit.value}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache.value}</prop>
+                <!-- 
+                <prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
+                <prop key="hibernate.transaction.flush_before_completion">${hibernate.transaction.flush_before_completion}</prop>
+                <prop key="hibernate.transaction.auto_close_session">${hibernate.transaction.auto_close_session}</prop>
+                -->
+            </props>
+        </property>
+    </bean>
+
+<!--     Configuration du template Hibernate utilisé dans les DAO. -->
+<!--     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"> -->
+<!--         <property name="sessionFactory" ref="sessionFactory" /> -->
+<!--     </bean> -->
+</beans>

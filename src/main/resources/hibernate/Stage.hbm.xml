@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.plugwine.domain.model">
+    <class name="Stage" table="Stage">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="stageType" class="com.plugwine.domain.model.StageType" fetch="select">
+            <column name="StageTypeId" not-null="true" />
+        </many-to-one>
+        <many-to-one name="releasePath" class="com.plugwine.domain.model.ReleasePath" fetch="select">
+            <column name="ReleasePathId" not-null="true" />
+        </many-to-one>
+        <property name="environmentId" type="java.lang.Integer">
+            <column name="EnvironmentId" />
+        </property>
+        <property name="rank" type="int">
+            <column name="Rank" not-null="true" />
+        </property>
+        <property name="isDeleted" type="boolean">
+            <column name="IsDeleted" not-null="true" />
+        </property>
+        <set name="applicationVersionStages" table="ApplicationVersionStage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="StageId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.ApplicationVersionStage" />
+        </set>
+    </class>
+</hibernate-mapping>

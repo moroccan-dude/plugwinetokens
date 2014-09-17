@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="com.plugwine">
+		<level value="info" />
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+
+    <logger name="org.hibernate.cfg">
+        <level value="info" />
+    </logger>
+    <!--  enable these to debug pbs related to tx demarcation, connection and flushing -->
+    
+    <logger name="org.hibernate.connection">
+        <level value="debug" />
+    </logger>
+    <logger name="org.hibernate.transaction.JDBCTransaction">
+        <level value="debug" />
+    </logger>
+    <logger name="org.hibernate.jdbc.ConnectionManager">
+        <level value="trace" />
+    </logger>
+    <logger name="org.hibernate.jdbc.JDBCContext">
+        <level value="trace" />
+    </logger>
+    <logger name="org.hibernate.impl.SessionImpl">
+        <level value="trace" />
+    </logger>
+    <logger name="org.hibernate.impl.SessionFactoryImpl">
+        <level value="debug" />
+    </logger>
+    <logger name="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <level value="debug" />
+    </logger>
+    <logger name="org.springframework.orm.hibernate4.SessionFactoryUtils">
+        <level value="debug" />
+    </logger>
+    <logger name="org.apache.commons.dbcp">
+        <level value="debug" />
+    </logger>
+    
+<!--     <logger name="org.springframework"> -->
+<!--         <level value="info" /> -->
+<!--     </logger> -->
+    
+    <!--  log4jdbc levels -->
+    <logger name="jdbc.sqlonly">
+        <level value="error" />
+    </logger>
+    <logger name="jdbc.sqltiming">
+        <level value="fatal" />
+    </logger>
+    <logger name="jdbc.audit">
+        <level value="fatal" />
+    </logger>
+    <logger name="jdbc.resultset">
+        <level value="fatal" />
+    </logger>
+    <logger name="jdbc.connection">
+        <level value="fatal" />
+    </logger>
+    
+	<!-- Root Logger -->
+	<root>
+		<level value="info" />
+		<appender-ref ref="console" />
+	</root>
+	
+</log4j:configuration>

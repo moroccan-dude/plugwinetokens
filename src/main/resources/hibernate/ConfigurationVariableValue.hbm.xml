@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.plugwine.domain.model">
+    <class name="ConfigurationVariableValue" table="ConfigurationVariableValue">
+        <composite-id name="id" class="com.plugwine.domain.model.ConfigurationVariableValueId">
+            <key-property name="id" type="int">
+                <column name="Id" />
+            </key-property>
+            <key-property name="applicationVersionStageActivityId" type="int">
+                <column name="ApplicationVersionStageActivityId" />
+            </key-property>
+            <key-property name="configurationVariableId" type="int">
+                <column name="ConfigurationVariableId" />
+            </key-property>
+            <key-property name="serverId" type="java.lang.Integer">
+                <column name="ServerId" />
+            </key-property>
+            <key-property name="value" type="java.lang.String">
+                <column name="Value" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="applicationVersionStageActivity" class="com.plugwine.domain.model.ApplicationVersionStageActivity" update="false" insert="false" fetch="select">
+            <column name="ApplicationVersionStageActivityId" not-null="true" />
+        </many-to-one>
+        <many-to-one name="configurationVariable" class="com.plugwine.domain.model.ConfigurationVariable" update="false" insert="false" fetch="select">
+            <column name="ConfigurationVariableId" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

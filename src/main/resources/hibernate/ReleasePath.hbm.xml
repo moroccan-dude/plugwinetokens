@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.plugwine.domain.model">
+    <class name="ReleasePath" table="ReleasePath">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="Name" not-null="true" unique="true" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="Description" not-null="true" />
+        </property>
+        <property name="statusId" type="int">
+            <column name="StatusId" not-null="true" />
+        </property>
+        <property name="createdOn" type="timestamp">
+            <column name="CreatedOn" length="23" not-null="true" />
+        </property>
+        <property name="createdById" type="int">
+            <column name="CreatedById" not-null="true" />
+        </property>
+        <property name="modifiedOn" type="timestamp">
+            <column name="ModifiedOn" length="23" not-null="true" />
+        </property>
+        <property name="modifiedById" type="int">
+            <column name="ModifiedById" not-null="true" />
+        </property>
+        <property name="isDeleted" type="boolean">
+            <column name="IsDeleted" not-null="true" />
+        </property>
+        <set name="stages" table="Stage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ReleasePathId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.Stage" />
+        </set>
+        <set name="applicationVersions" table="ApplicationVersion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ReleasePathId" not-null="true" />
+            </key>
+            <one-to-many class="com.plugwine.domain.model.ApplicationVersion" />
+        </set>
+    </class>
+</hibernate-mapping>
