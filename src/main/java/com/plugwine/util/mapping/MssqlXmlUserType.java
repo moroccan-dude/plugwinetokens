@@ -1,4 +1,4 @@
-package com.plugwine.util;
+package com.plugwine.util.mapping;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

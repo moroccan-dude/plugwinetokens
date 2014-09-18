@@ -14,7 +14,7 @@
         <many-to-one name="stage" class="com.plugwine.domain.model.Stage" fetch="select">
             <column name="StageId" not-null="true" />
         </many-to-one>
-        <property name="workflow" type="com.plugwine.util.MssqlXmlUserType">
+        <property name="workflow" type="com.plugwine.util.mapping.MssqlXmlUserType">
             <column name="Workflow" />
         </property>
         <set name="applicationVersionStageActivities" table="ApplicationVersionStageActivity" inverse="true" lazy="true" fetch="select">

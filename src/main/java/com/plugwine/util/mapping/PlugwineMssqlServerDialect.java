@@ -1,4 +1,4 @@
-package com.plugwine.util;
+package com.plugwine.util.mapping;
 
 import org.hibernate.dialect.SQLServer2008Dialect;
 //import org.hibernate.dialect.SQLServer2012Dialect;
