@@ -166,6 +166,13 @@
             <scope>runtime</scope> 
         </dependency>
         
+        <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.18</version>
+			<scope>runtime</scope> 
+		</dependency>
+        
  		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -214,6 +221,38 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
+			<plugin> <!--  set skip to false and run this for a 
+                              simple DDL generation mvn -e hibernate3:hbm2ddl -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <configuration>
+                	<components>
+			      		<component>
+			        		<name>hbm2ddl</name>
+			        		<outputDirectory>src/main/resources</outputDirectory>
+			      		</component>
+			    	</components>
+                	<componentProperties>
+                        <create>true</create>
+                        <drop>false</drop>
+                        <export>false</export>
+                        <update>false</update>
+                        <format>true</format>
+                        <skip>true</skip> <!--  set to false if you want to generate the DDL -->
+                        <outputfilename>new-schema.sql</outputfilename>
+                        <configurationfile>src/main/resources/hibernate/hibernate.cfg.xml</configurationfile>
+                        <propertyfile>src/main/resources/spring-hibernate.properties.hbm2ddl</propertyfile>
+                 	</componentProperties>
+                </configuration>
+                <executions>
+	                <execution>
+	                    <phase>generate-resources</phase> <!--  or process-classes in case you need to generate the classes from hbm, not our case in NTC -->
+	                    <goals>
+	                        <goal>hbm2ddl</goal>
+	                    </goals>
+	                </execution>
+           		</executions>
+            </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
