@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,7 +31,8 @@ public class MssqlXmlUserType implements UserType, Serializable {
  
     private static final long serialVersionUID = 2308230823023l;
     private static final Class<Document> returnedClass = Document.class;
-    public static final int XML_SQL_TYPE = -16;
+    public static final int XML_SQL_TYPE = Types.LONGNVARCHAR;
+    //public static final int XML_SQL_TYPE = Types.LONGVARCHAR;
     private static final int[] SQL_TYPES = new int[] { XML_SQL_TYPE };
  
     public int[] sqlTypes() {

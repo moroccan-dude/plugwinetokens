@@ -25,8 +25,10 @@ public class PlugwineMssqlServerDialect extends SQLServer2008Dialect{
 		    registerColumnType(Types.VARCHAR, 255, "nvarchar($l)");
 		    
 		    // I also had to implement the XML user type
-		    registerHibernateType(MssqlXmlUserType.XML_SQL_TYPE, "xmltype");
-	        registerColumnType(MssqlXmlUserType.XML_SQL_TYPE, "xmltype");
+		    registerHibernateType(MssqlXmlUserType.XML_SQL_TYPE, "xml"); /* xml is the type as it is defined in MSSQL SERVER */
+	        registerColumnType(MssqlXmlUserType.XML_SQL_TYPE, "xml");
+//	        registerHibernateType(MssqlXmlUserType.XML_SQL_TYPE2, "xml"); /* xml is the type as it is defined in MSSQL SERVER */
+////	        registerColumnType(MssqlXmlUserType.XML_SQL_TYPE2, "xml");
 	        
 	        // I also had to implement the Uniqueidentifier user type
 	        registerHibernateType(MssqlUuidUserType.UUID_SQL_TYPE, "uniqueidentifier");

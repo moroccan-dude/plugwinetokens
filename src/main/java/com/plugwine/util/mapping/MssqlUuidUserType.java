@@ -17,7 +17,7 @@ public class MssqlUuidUserType implements UserType, Serializable {
  
     private static final long serialVersionUID = 2308230823023l;
     private static final Class<Document> returnedClass = Document.class;
-    public static final int UUID_SQL_TYPE = -32;
+    public static final int UUID_SQL_TYPE = 12;//-32;
     private static final int[] SQL_TYPES = new int[] { UUID_SQL_TYPE };
  
     public int[] sqlTypes() {
