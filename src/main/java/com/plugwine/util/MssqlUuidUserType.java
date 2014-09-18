@@ -12,7 +12,7 @@ import org.hibernate.usertype.UserType;
 import org.w3c.dom.Document;
 
  
-public class MSSQLUUIDUserType implements UserType, Serializable {
+public class MssqlUuidUserType implements UserType, Serializable {
     // all other methods are ommitted at present for brevity
  
     private static final long serialVersionUID = 2308230823023l;

@@ -25,7 +25,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
  
-public class MSSQLXMLUserType implements UserType, Serializable {
+public class MssqlXmlUserType implements UserType, Serializable {
     // all other methods are ommitted at present for brevity
  
     private static final long serialVersionUID = 2308230823023l;
