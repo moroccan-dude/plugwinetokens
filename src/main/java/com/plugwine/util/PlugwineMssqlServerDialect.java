@@ -7,9 +7,9 @@ import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
 
-public class PlugwineSQLServerDialect extends SQLServer2008Dialect{
+public class PlugwineMssqlServerDialect extends SQLServer2008Dialect{
 	
-	 public PlugwineSQLServerDialect() {
+	 public PlugwineMssqlServerDialect() {
 		    super();
 		    registerColumnType(Types.CHAR, "nchar(l)");
 		    registerColumnType(Types.LONGVARCHAR, "nvarchar($l)");
