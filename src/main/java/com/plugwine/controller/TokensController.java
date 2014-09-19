@@ -23,15 +23,11 @@ public class TokensController {
 	
 	@Autowired
 	private ConfigurationVariableManager configurationVariableManager;
-//	public void setConfigurationVariableManager(ConfigurationVariableManager configurationVariableManager)
-//	{
-//		this.configurationVariableManager = configurationVariableManager;
-//	}
 	
-	@RequestMapping(value = TokensURIConstants.GET_ALL_TOKENS, method = RequestMethod.GET)
-	public @ResponseBody List<TokenHolder> getAllTokens(String componentId) {
+	@RequestMapping(value = TokensURIConstants.GET_ALL_CONFVARIABLES, method = RequestMethod.GET)
+	public @ResponseBody List<TokenHolder> getAllVariables() {
 		logger.info("Start getAllTokens.");
-		List<TokenHolder> allTokens = configurationVariableManager.findAllTokens(componentId);
+		List<TokenHolder> allTokens = configurationVariableManager.findAllVariables();
 		
 		return allTokens;
 	}

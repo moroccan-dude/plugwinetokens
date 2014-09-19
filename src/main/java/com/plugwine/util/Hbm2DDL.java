@@ -12,7 +12,8 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 public class Hbm2DDL {
 
 	    public static void main(String[] args) throws IOException {
-	        execute(args[0], args[1], args[2], Boolean.parseBoolean(args[3]), Boolean.parseBoolean(args[4]), Boolean.parseBoolean(args[5]));
+	        execute(args[0], args[1], args[2], Boolean.parseBoolean(args[3]), 
+	        		Boolean.parseBoolean(args[4]), Boolean.parseBoolean(args[5]), Boolean.parseBoolean(args[6]));
 	    }
 	     
 //	public static void main(String[] args)
@@ -26,8 +27,14 @@ public class Hbm2DDL {
 //			e.printStackTrace();
 //		}
 //	}
-	    public static void execute(String hbmCfgFilePath, String propFilePath, String destinationPath, boolean create, boolean format, boolean export) throws FileNotFoundException, IOException 
+	    public static void execute(String hbmCfgFilePath, String propFilePath, String destinationPath, boolean create, 
+	    		boolean format, boolean export, boolean skipGeneration) throws FileNotFoundException, IOException 
 	    {
+	    	if(skipGeneration)
+	    	{
+	    		System.out.println("Skipping schema export");
+	    		return;
+	    	}
 	        System.out.println("Starting schema export using: "+ hbmCfgFilePath + " and " + propFilePath);
 	        if(export)
 	        	System.out.println(">>>>>>>>>>>>>>>>>>   Exporting the SQL   <<<<<<<<<<<<<<<<<<");
@@ -43,7 +50,7 @@ public class Hbm2DDL {
 	        schemaExport.setFormat(format);
 	        schemaExport.setDelimiter(";");
 
-	        schemaExport.execute(true, export, true, create);
+	        schemaExport.execute(true, export, false, create);
 	        System.out.println("Schema exported to " + destinationPath);
 	    }
 }

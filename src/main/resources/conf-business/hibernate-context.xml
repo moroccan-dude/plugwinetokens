@@ -14,10 +14,10 @@
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto.value}</prop>
                 <prop key="hibernate.connection.autocommit">${hibernate.connection.autocommit.value}</prop>
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache.value}</prop>
+                <prop key="hibernate.transaction.auto_close_session">${hibernate.transaction.auto_close_session.value}</prop>
                 <!-- 
                 <prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
                 <prop key="hibernate.transaction.flush_before_completion">${hibernate.transaction.flush_before_completion}</prop>
-                <prop key="hibernate.transaction.auto_close_session">${hibernate.transaction.auto_close_session}</prop>
                 -->
             </props>
         </property>

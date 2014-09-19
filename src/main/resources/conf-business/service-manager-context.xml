@@ -25,9 +25,8 @@
     <bean id="genericManager" class="com.plugwine.manager.impl.GenericManagerImpl"
         abstract="true" parent="abstractManager" />
 
-    <bean id="configurationManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl"
-        parent="genericManager">
-<!--         <constructor-arg ref="configurationVariableDao" /> -->
-          <property name="configurationVariableDao" ref="configurationVariableDao" />
+    <bean id="configurationManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl" parent="genericManager">
+          <constructor-arg ref="configurationVariableDao"/>
     </bean>
+    
 </beans>

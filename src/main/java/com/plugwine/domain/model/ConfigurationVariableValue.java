@@ -52,4 +52,10 @@ public class ConfigurationVariableValue implements java.io.Serializable {
 		this.configurationVariable = configurationVariable;
 	}
 
+	@Override
+    public String toString() {
+		if(getId()==null) 
+			return null;
+        return getClass().getSimpleName() + "[id:" + getId().getId() + "], [value:" + getId().getValue() + "]";
+    }
 }

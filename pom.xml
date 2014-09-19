@@ -242,6 +242,7 @@
 			            <argument>true</argument> <!-- generate the create sql -->
 			            <argument>true</argument> <!-- format -->
 			            <argument>false</argument> <!-- WARNING!!! export the sql file  -->
+			            <argument>true</argument> <!--  skipping generation -->
 			        </arguments>
 			    </configuration>
 			</plugin>

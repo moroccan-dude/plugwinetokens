@@ -7,6 +7,6 @@ import com.plugwine.domain.model.ConfigurationVariable;
 
 public interface ConfigurationVariableManager extends GenericManager<ConfigurationVariable, Long> {
 
-	public List<TokenHolder> findAllTokens(String componentId); 
+	public List<TokenHolder> findAllVariables(); 
 	
 }

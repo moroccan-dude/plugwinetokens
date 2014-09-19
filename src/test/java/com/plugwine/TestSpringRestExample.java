@@ -20,14 +20,14 @@ public class TestSpringRestExample {
 //		System.out.println("*****");
 //		testGetEmployee();
 //		System.out.println("*****");
-		testGetAllTokens();
+		testGetAllReleases();
 	}
 
-	private static void testGetAllTokens() {
+	private static void testGetAllReleases() {
 		RestTemplate restTemplate = new RestTemplate();
 		//we can't get List<Employee> because JSON convertor doesn't know the type of
 		//object in the list and hence convert it to default JSON object type LinkedHashMap
-		List<Object> tokens = restTemplate.getForObject(SERVER_URI+TokensURIConstants.GET_ALL_TOKENS, List.class);
+		List<Object> tokens = restTemplate.getForObject(SERVER_URI+TokensURIConstants.GET_ALL_CONFVARIABLES, List.class);
 		System.out.println(tokens.size());
 		for(Object elem : tokens)
 		{
