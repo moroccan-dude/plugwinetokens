@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Thomas
  *
  */
-@Transactional
 public class Hibernate4DaoSupport {
 	private SessionFactory sessionFactory;
 
@@ -56,7 +57,20 @@ public class Hibernate4DaoSupport {
 	}
 
 	protected Session getCurrentSession(){
-		return sessionFactory.getCurrentSession();
+		Session session = null;
+		try {
+			session =  sessionFactory.getCurrentSession();
+			
+		} catch (HibernateException he) {
+			try {
+				session = sessionFactory.openSession();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+			}
+				
+		}
+		
+		return session;
 	}
 	
 	/**

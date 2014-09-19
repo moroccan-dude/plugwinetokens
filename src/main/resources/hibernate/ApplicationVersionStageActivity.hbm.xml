@@ -17,7 +17,7 @@
         <property name="serverId" type="int">
             <column name="ServerId" not-null="true" />
         </property>
-        <property name="workflowActivityId"  type="com.plugwine.util.mapping.MssqlUuidUserType"> <!--  type="java.lang.String"> -->
+        <property name="workflowActivityId"  type="java.lang.String"> <!-- type="com.plugwine.util.mapping.MssqlUuidUserType">  -->
             <column name="WorkflowActivityId" length="36" not-null="true" unique="true"/>
         </property>
         <set name="configurationVariableValues" table="ConfigurationVariableValue" inverse="true" lazy="true" fetch="select">

@@ -94,7 +94,6 @@ public abstract class GenericManagerImpl<T, ID extends Serializable> extends Abs
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<T> getAllWithDependencies() {
         List<T> entities = dao.findAll();//getAll();
         for (T entity : entities) {
