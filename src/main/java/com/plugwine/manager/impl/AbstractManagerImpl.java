@@ -11,10 +11,8 @@ import com.plugwine.util.IMessageSource;
 
 
 /**
- * Implémentation d'un gestionnaire par défaut.
+ * Abstract Manager class
  * 
- * @author vboriesazeau
- * @version 1.0.0
  */
 public abstract class AbstractManagerImpl implements AbstractManager {
 
@@ -22,22 +20,17 @@ public abstract class AbstractManagerImpl implements AbstractManager {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * La source de messages
+     * the Message source
      */
     @Autowired
     @Qualifier(value = "businessMessageSource")
     private IMessageSource messageSource;
 
-//    /**
-//     * La factory de service.
-//     */
-//    private ServiceFactory serviceFactory;
 
     /**
-     * Constructeur pour les sous-classes.
+     * Default constructor
      */
     protected AbstractManagerImpl() {
-        // rien à faire
     }
 
     protected final Logger getLogger() {
@@ -46,9 +39,9 @@ public abstract class AbstractManagerImpl implements AbstractManager {
 
     protected final IMessageSource getMessageSource() {
         if (messageSource == null) {
-            logger.warn("Message messageSource est null");
+            logger.warn("Null messageSource found");
             //
-            // Parade moyenne et temporaire
+            //
             messageSource = new DefaultMessageSource();
         }
         return messageSource;

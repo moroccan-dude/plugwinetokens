@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
     <bean id="appBundle" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
@@ -28,5 +31,16 @@
     <bean id="configurationManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl" parent="genericManager">
           <constructor-arg ref="configurationVariableDao"/>
     </bean>
+   
+    <bean id="manualSessionAdvice" class="com.plugwine.util.transaction.ManualSessionAdvice" />
+     
+<!--     <aop:config> This is equivalent to adding @Aspect and the @After directive in the com.plugwine.util.transaction.ManualSessionAdvice class-->
+<!--         <aop:aspect ref="manualSessionAdvice"> -->
+<!--             <aop:pointcut expression="@target(com.plugwine.util.transaction.ReadOnlyTransaction) &amp;&amp; target(com.plugwine.manager.GenericManager)" id="LogsPnt"/> -->
+<!--             <aop:after pointcut-ref="LogsPnt" method="cleanupManualSession" /> -->
+<!--         </aop:aspect> -->
+<!--     </aop:config> -->
     
+    <!-- Enable the @AspectJ support -->
+ 	<aop:aspectj-autoproxy />
 </beans>

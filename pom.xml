@@ -70,6 +70,11 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${org.aspectj-version}</version>
+        </dependency>
 
 		<!-- Logging -->
 		<dependency>
@@ -251,18 +256,18 @@
 	</build>
 	<profiles>
         <profile>
-            <id>dev_mssql</id>
+            <id>dev_mysql</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <environment>dev_mssql</environment>
+                <environment>dev_mysql</environment>
             </properties>
         </profile>
         <profile>
-		    <id>dev_mysql</id>
+		    <id>dev_mssql</id>
 		    <properties>
-			<environment>dev_mysql</environment>
+			<environment>dev_mssql</environment>
 		    </properties>
         </profile>
    </profiles>

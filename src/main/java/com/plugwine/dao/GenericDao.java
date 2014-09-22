@@ -3,39 +3,37 @@ package com.plugwine.dao;
 import java.io.Serializable;
 import java.util.List;
 
-
+import com.plugwine.util.SortFilterPagingCriteria;
 
 /**
- * Interface définisant un DAO générique pour l'accès aux données.
+ * Generic DAO interface for the entities of type T.
  * 
- * @author fchopard
- * 
- * @param <T> le type d'objet traité par ce DAO
- * @param <ID> le type de la clé primaire des objets de type <T>
+ * @param <T> the entity Type handled by this DAO
+ * @param <ID> the key type for the objects of type <T>
  */
 public interface GenericDao<T, ID extends Serializable> {
 
     /**
-     * Recherche un objet par son identifiant sans effectuer de lock sur l'accès.
+     * Returns an entity given its id.
      * 
-     * @param id l'identifiant de l'objet
-     * @return l'entité ou <code>null</code> si non trouvée
+     * @param id the entity id
+     * @return the entity or <code>null</code> if not found
      */
     T findById(ID id);
 
     /**
-     * Recherche un objet par son identifiant avec la possibilité d'effectuer un lock.
+     * Returns an entity given its id, with the possibility to issue a lock on this entity.
      * 
-     * @param id l'identifiant de l'objet
-     * @param lock si <code>true</code>, l'entité sera lockée
-     * @return l'entité ou <code>null</code> si non trouvée
+     * @param id the entity id
+     * @param lock if <code>true</code>, the entity record will be locked
+     * @return the entity or <code>null</code> if not found
      */
     T findById(ID id, boolean lock);
 
     /**
-     * Recherche toutes les entités connu du type géré par ce DAO.
+     * Return all entities of type T managed by this DAO.
      * 
-     * @return la liste des entités
+     * @return the entity list
      */
     List<T> findAll();
 
@@ -45,28 +43,25 @@ public interface GenericDao<T, ID extends Serializable> {
     List<T> findByExample(T entiteExemple);
 
     /**
-     * Recherche toutes les entités connues du type géré par ce gestionnaire dont l'id est dans la
-     * liste ids donnée en paramêtre. Si un id des id passé en paramêtre n'existe pas, il n'en sera
-     * pas tenu compte
+     * Returns all entities of type T managed by this DAO with an id in the given list. Invalid ids will be ignored.
      * 
-     * @return la liste des entités dont l'id est dans la liste ids
+     * @return the entity list with ids in the list.
      */
     List<T> findAllByIds(List<ID> ids);
 
     /**
-     * Recherche des entités en fonction d'une entité exemple. ATTENTION : Les propriétés de type
-     * version, identifiant et les associations sont ignorées. Par défaut, les valeurs a null sont
-     * exclues.
+     * Returns all matching entities using the example search. 
+     * Note all reserved properties such as version, id as well as associations are ignored. 
+     * Null values are also excluded.
      * 
-     * @param entiteExemple l'exemple
-     * @param proprietesExclues les propriétés de l'exemple qu'il faut ignorer
-     * @return la liste des entités
+     * @param entiteExample the example
+     * @param proprietesExclues the properties to exclude from the search
+     * @return the entity list
      */
-    List<T> findByExample(T entiteExemple, String... proprietesExclues);
+    List<T> findByExample(T entiteExample, String... proprietesExclues);
 
     /**
-     * Rend une entité persistente. Si elle ne l'était pas encore, elle est créée, sinon elle est
-     * mise à jour et rattaché au gestionnaire d'entités courant.
+     * Persist an entity.
      * 
      * @param entity l'entité
      * @return l'entité persistente
@@ -74,26 +69,22 @@ public interface GenericDao<T, ID extends Serializable> {
     T persist(T entity);
 
     /**
-     * Supprime une entité persistente.
+     * Delete an entity
      * 
-     * @param entity l'entité
+     * @param entity the entity
      */
     void delete(T entity);
 
     /**
-     * Force le gestionnaire d'entité à se synchroniser avec le système de persistence. Toutes les
-     * modifications en court sur les entités sont sauvegardées.
+     * Force this DAO to synchronize with the persistence layer.
      */
     void flush();
 
     /**
-     * Détache toutes les entités du gestionnaire.
+     * Detach all entities
      */
     void clear();
 
-    /**
-     * Une serie de methodes generiques
-     */
     /**
      * 
      * @param property
@@ -103,32 +94,19 @@ public interface GenericDao<T, ID extends Serializable> {
     T getByUniqueProperty(String property, Object value);
 
     /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
+     * Return the entity with the given properties and values
      * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
+     * It will invoke a namedquery with the name as such "get${EntityName}By${PropertyName}" with the passed in property values
      * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
+     * @param properties
+     * @param values to used in the search.
      * 
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
+     * @return Return the entity with the given properties and values, or <code>null</code> if there is no match.
      */
     T getUnique(String queryNameOrString, String[] properties, Object[] values);
 
-    /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
-     * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
-     * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
-     * 
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
-     */
-    Object getUniqueFromSql(String queryNameOrString, String[] properties, Object[] values);
+
+    //Object getUniqueFromSql(String queryNameOrString, String[] properties, Object[] values);
 
     /**
      * 
@@ -143,7 +121,7 @@ public interface GenericDao<T, ID extends Serializable> {
      * @param queryNameOrString
      * @param properties
      * @param values
-     * @param pageNumber Numéro de la page (-1 pour obtenir la liste complète des entités)
+     * @param pageNumber  (-1 to get all entities)
      * @return
      */
     List<?> listForQueryName(String queryNameOrString, String[] properties, Object[] values,
@@ -166,17 +144,16 @@ public interface GenericDao<T, ID extends Serializable> {
     List<T> listByProperty(String[] property, Object[] value);
 
     /**
-     * Retourne la liste de toutes les propriétés uniques d'une entité, triées selon l'ordre
-     * spécifié.
+     * Return the list of all unique properties for an entity ordered according to sortOrder
      * 
-     * @param property Nom de la propriété unique
-     * @param sortOrder Ordre de tri sur cette propriété ({@link SortFilterPagingCriteria}
-     * @return Liste des valeurs uniques de cette propriété
+     * @param property Name of the unique property
+     * @param sortOrder sort order for this property ({@link SortFilterPagingCriteria}
+     * @return
      */
     List<?> findAllUniqueProperty(String property, String sortOrder);
     
     /**
-     * Retourne le nombre total de records
+     * Return the total count of records
      * 
      * @param queryNameOrString
      * @param properties
@@ -190,7 +167,7 @@ public interface GenericDao<T, ID extends Serializable> {
      * @param queryNameOrString
      * @param properties
      * @param values
-     * @param maxResults Nombre maximum de lignes à retourner
+     * @param maxResults Maximum number of records to return
      * @return
      */
     List<?> listForQueryNameWithMaxResults(String queryNameOrString, String[] properties, Object[] values,
@@ -201,7 +178,7 @@ public interface GenericDao<T, ID extends Serializable> {
      * @param queryNameOrString
      * @param properties
      * @param values
-     * @param firstResults Nombre de lignes a sauter
+     * @param firstResults first records to retrieve
      * @return
      */
     List<?> listForQueryNameWithFirstResults(String queryNameOrString, String[] properties, Object[] values,

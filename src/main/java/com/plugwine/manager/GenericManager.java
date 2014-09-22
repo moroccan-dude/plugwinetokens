@@ -4,83 +4,75 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Interface définissant un gestionnaire générique pour une entité.
+ * Generic Interface for the entity manager layer
+ *
  * 
- * @author fchopard
- * 
- * @param <T> le type d'entité traité par ce service
- * @param <ID> le type de la clé primaire des objets de type <T>
+ * @param <T> the entity type handled by this manager
+ * @param <ID> the key type for the objects of type <T>
  */
 public interface GenericManager<T, ID extends Serializable> extends AbstractManager {
 
     /**
-     * Récupère une entité selon son identifiant.
+     * Returns an entity given its id
      * 
-     * @param id l'identifiant de l'objet
-     * @return l'entité ou <code>null</code> si non trouvée
+     * @param id entity id
+     * @return the matching entity or <code>null</code> if not found
      */
     T get(ID id);
 
     /**
-     * Récupère une entité selon son identifiant avec ses dépendances sans tenir compte du lazy
-     * loading de celles-ci.
+     * Returns an entity given its id including the dependents entities as defined per <code>loadDependencies()</code>
      * 
-     * @param id l'identifiant de l'objet
-     * @return l'entité ou <code>null</code> si non trouvée
+     * @param id the entity id
+     * @return the matching entity or <code>null</code> if not found
      */
     T getWithDependencies(ID id);
 
     /**
-     * Recherche toutes les entités connues du type géré par ce gestionnaire.
+     * Returns all the entities of type T handled by this manager.
      * 
-     * @return la liste des entités
+     * @return the entity list
      */
     List<T> getAll();
 
     /**
-     * Recherche toutes les entités connues du type géré par ce gestionnaire avec leurs dépendances
-     * sans tenir compte du lazy loading de celles-ci.
+     * Returns all entities of this type including the dependents entities as defined per <code>loadDependencies()</code>
      * 
-     * @return la liste des entités
+     * @return the entity list
      */
     List<T> getAllWithDependencies();
 
     /**
-     * Recherche toutes les entités connues du type géré par ce gestionnaire dont l'id est dans la
-     * liste ids donnée en paramêtre. Si un id des id passé en paramêtre n'existe pas, il n'en sera
-     * pas tenu compte
+     * Returns the list of entities defined in the given list. 
+     * Invalid ids will be ignored.
      * 
-     * @return la liste des entités dont l'id est dans la liste ids
+     * @return the list
      */
     List<T> getAllByIds(List<ID> ids);
 
     /**
-     * Sauve une entité persistente. Si elle ne l'était pas encore, elle est créée, sinon elle est
-     * mise à jour.
+     * Save a detached entity. The entity is created (if not) and saved.
      * 
-     * @param entity l'entité
-     * @return l'entité sauvée
+     * @param entity the entity
+     * @return the persisted entity
      */
     T persist(T entity);
 
     /**
-     * Supprime une entité.
+     * delete an entity
      * 
-     * @param entity l'entité
+     * @param entity to delete
      */
     void delete(T entity);
 
     /**
-     * Contrôle si une entité existe déjà en fonction de son identifiant.
+     * fetch an entity given its ID
      * 
-     * @param id l'identifiant
-     * @return <code>true</code> si l'entité existe, sinon <code>false</code>
+     * @param id
+     * @return <code>true</code> if the entity exists, <code>false</code> otherwise
      */
     boolean exists(ID id);
 
-    /**
-     * Une serie de methodes generiques
-     */
     /**
      * 
      * @param property
@@ -111,7 +103,7 @@ public interface GenericManager<T, ID extends Serializable> extends AbstractMana
      * @param queryNameOrString
      * @param properties
      * @param values
-     * @param pageNumber Numéro de la page (-1 pour obtenir la liste complète des entités)
+     * @param pageNumber (-1 to get all entities)
      * @return
      */
     List<?> listForQueryName(String queryNameOrString, String[] properties, Object[] values,

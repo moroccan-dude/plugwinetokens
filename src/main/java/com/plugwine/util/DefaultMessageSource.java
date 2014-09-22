@@ -7,20 +7,16 @@ import org.springframework.context.MessageSource;
 
 
 /**
- * Implémentation par défaut d'une source de messages pour l'application.
+ * Default MessageSource implementation for the app
  * 
- * @author vboriesazeau
- * @version 1.0.0
  */
 public class DefaultMessageSource implements IMessageSource {
 
     /**
-     * Fichier de messages
+     * Bundle
      */
     private MessageSource bundle;
-    /**
-     * Paramètres régionaux du système
-     */
+   
     //private Locale applicationLocale = null;
 
     @Override

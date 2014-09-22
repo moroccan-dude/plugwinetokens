@@ -22,14 +22,11 @@ import com.plugwine.util.AppInfo;
 import com.plugwine.util.SortFilterPagingCriteria;
 
 /**
- * Implémentation d'un DAO générique lié à une entité persistante. Cette implémentation peut être
- * utilisée soit directement comme un bean Spring en passant le type d'entité en paramètre du
- * constructeur, soit sous-classée pour y ajouter des méthodes spécifiques à cette entité.
+ * Generic Hibernate implementation of the DAO interface for the entities of type T
  * 
- * @author fchopard
  * 
- * @param <T> le type d'objet traité par ce DAO
- * @param <ID> le type de la clé primaire des objets de type <T>
+ * @param <T> the entity Type handled by this DAO
+ * @param <ID> the key type for the objects of type <T>
  */
 @Repository
 public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4DaoSupport implements
@@ -41,15 +38,14 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     /**
-     * Type de l'entité gérée par ce DAO
+     * The entity type handled by this DAO.
      */
     private final Class<T> entityType;
 
 	private AppInfo appInfo;
     
     /**
-     * Constructeur pour les sous-classes. Le type de la classe des entités est récupéré
-     * automatiquement de la sous-classe.
+     * Constructor. The entity type is automatically detected.
      */
     protected GenericDaoHibernate() {
         ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
@@ -59,8 +55,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     }
 
     /**
-     * Constructeur pour instancier directement un DAO générique depuis Spring sans créer de
-     * sous-classe.
+     * Constructor.
      * 
      * @param entityClass la classe de l'entité
      */
@@ -85,7 +80,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
      */
     public final void delete(T entity) {
         /*
-         * Il est nécessaire de réattacher une entité pour pouvoir la supprimer.
+         * attaching an entity in order to delete it.
          */
         entity = persist(entity);
         getHibernateTemplate().deleteEntity(entity);
@@ -155,19 +150,10 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     }
 
     /**
-     * Retourne tous les objets disponible pour la propriété property dans le cadre d'une relation
-     * One To One sur cette propriété. Les objets sont considérés comme disponible si et seulement
-     * si ils ne sont pas déjà utilisé par une autre instance pour la même propriété.
      * 
-     * Cela se traduit par l'appel de la requête nommée
-     * "findAvailablesObjectsFor${EntityName}${PropertyName}" avec comme paramètre nommé l'id passé
-     * en paramètre si la requête en a besoin.
+     * Invoking the named query:
+     * "findAvailablesObjectsFor${EntityName}${PropertyName}"
      * 
-     * @param property le nom de la propriété visée
-     * @param entityId l'id de l'entité pour laquelle il faut récupérer les objets disponible.
-     * 
-     * @return Retourne tous les objets disponible pour la propriété property <br>
-     *         TODO
      */
     protected List<?> findAvailablesObjectsForProperty(String property, ID entityId) {
         String queryName = "findAvailablesObjectsFor" + entityType.getSimpleName()
@@ -180,16 +166,9 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     }
 
     /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
+     * Invoking the named query:
+     * "get${EntityName}By${PropertyName}"
      * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
-     * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
-     * 
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
      */
     @SuppressWarnings("unchecked")
     public T getByUniqueProperty(String property, Object value) {
@@ -248,7 +227,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
      */
     public Long getCount(String queryNameOrString, String[] properties, Object[] values)
     {
-    	// On essaie par le nom.
+    	// let's try the query name
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -261,11 +240,11 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
+        // falling back to the full string
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
-        // S'il y a des parametres
+        // if there are any parameters
         if (query.getNamedParameters().length > 0) {
             Object value;
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -278,7 +257,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             }
         }
 
-       // On retourne une liste
        return (Long) query.uniqueResult();
     }
     
@@ -288,7 +266,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     @SuppressWarnings("unchecked")
     public T getUnique(String queryNameOrString, String[] properties, Object[] values) {
         //
-        // On essaie par le nom.
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -301,12 +278,10 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
 
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             Object value;
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -322,62 +297,15 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
         return (T) query.uniqueResult();
     }
 
+   
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getUniqueFromSql(String queryNameOrString, String[] properties, Object[] values) {
-        //
-        // On essaie par le nom.
-        Query query = null;
-        try {
-            if (!queryNameOrString.contains(" ")) {
-                query = getCurrentSession().getNamedQuery(queryNameOrString);
-            }
-        } catch (Exception ex) {
-            LOGGER.debug("Unable to find Query :" + queryNameOrString
-                + " - Exception :"
-                + ex.getMessage());
-            query = null;
-        }
-        //
-        // Si cela ne marche pas on utile la chaine
-        if (query == null) {
-            query = getCurrentSession().createQuery(queryNameOrString);
-        }
-        
-        // S'il y a des parametres
-        if (query.getNamedParameters().length > 0) {
-            Object value;
-            for (int i = 0; i < properties.length && i < values.length; i++) {
-                value = values[i];
-                if (value instanceof Collection) {
-                    query.setParameterList(properties[i], (Collection<?>) value);
-                } else {
-                    query.setParameter(properties[i], value);
-                }
-            }
-        }
-
-        return query.uniqueResult();
-    }
-
-    /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
+     * invoking the named query:
+     * "get${EntityName}By${PropertyName}"
      * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
-     * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
-     * 
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
      */
     @SuppressWarnings("unchecked")
     public T getUnique(String queryNameOrString, Object[] values) {
         //
-        // On essaie par le nom.
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -390,12 +318,10 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
 
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             String[] properties = query.getNamedParameters();
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -407,22 +333,13 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     }
 
     /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
-     * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
-     * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
-     * @param pageNumber Numéro de la page (-1 pour obtenir la liste complète des entités)
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
+     * invoking the named query:
+     * "get${EntityName}By${PropertyName}"
      */
     @Override
     public List<?> listForQueryName(String queryNameOrString, String[] properties, Object[] values,
         int pageNumber) {
 
-        // On essaie par le nom.
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -435,11 +352,9 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             Object value;
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -455,7 +370,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
         // Pagination
         insertPagingCriteria(query, pageNumber, appInfo.getMaxSearchPageSize());
 
-        // On retourne une liste
         return query.list();
     }
 
@@ -467,7 +381,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     public List<?> listForQueryNameWithMaxResults(String queryNameOrString, String[] properties, Object[] values,
         int maxResults) {
 
-        // On essaie par le nom.
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -480,11 +393,10 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
-        // S'il y a des parametres
+
         if (query.getNamedParameters().length > 0) {
             Object value;
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -500,21 +412,14 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
         // Max results
         query.setMaxResults(maxResults);
 
-        // On retourne une liste
         return query.list();
     }
     
     /**
-     * Retourne l'objet disponible dont la propriété unique spécifiée a la valeur indiquée.
      * 
-     * Cela se traduit par l'appel de la requête nommée "get${EntityName}By${PropertyName}" avec la
-     * valeur spécifiée pour la propriété.
+     * Invoking the named query:
+     * "list${EntityName}By${PropertyName}"
      * 
-     * @param property Nom d'une propriété unique
-     * @param value Valeur de la propriété pour laquelle il faut récupérer un objet.
-     * 
-     * @return Retourne l'unique objet dont la propriété a la valeur spécifiée, ou <code>null</code>
-     *         si aucun objet n'a cette propriété avec cette valeur.
      */
     @SuppressWarnings("unchecked")
     public List<T> listByProperty(String property, Object value) {
@@ -522,7 +427,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             + "By"
             + WordUtils.capitalize(property);
 
-        // On essaie par le nom.
         Query query = null;
         try {
             query = getCurrentSession().getNamedQuery(queryName);
@@ -531,7 +435,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
 
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             String queryString = "from " + entityType.getSimpleName()
                 + " as entity where entity."
@@ -541,7 +444,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = getCurrentSession().createQuery(queryString);
         }
 
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             if (value instanceof Collection) {
                 query.setParameterList(property, (Collection<?>) value);
@@ -550,7 +452,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             }
         }
 
-        // On retourne une liste
         return (List<T>) query.list();
     }
 
@@ -574,14 +475,12 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
         Query query = null;
         query = getCurrentSession().createQuery(queryString);
 
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             for (int i = 0; i < property.length && i < value.length; i++) {
                 query.setParameter(property[i], value[i]);
             }
         }
 
-        // On retourne une liste
         return (List<T>) query.list();
     }
 
@@ -597,10 +496,10 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
      * {@inheritDoc}
      */
     @Override
-    public final List<T> findByExample(final T entiteExemple, final String... proprietesExclues) 
+    public final List<T> findByExample(final T entiteExample, final String... proprietesExclues) 
     {
         Criteria crit = getCurrentSession().createCriteria(entityType);
-        Example example = Example.create(entiteExemple);
+        Example example = Example.create(entiteExample);
         if (proprietesExclues != null) {
             for (String exclue : proprietesExclues) {
                 example.excludeProperty(exclue);
@@ -631,15 +530,11 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     }
 
     /**
-     * Ajoute des critères de pagination sur une requête Hibernate.
+     * Amend pagination criteria on an hibernate query
      * 
-     * @param query Requête Hibernate
-     * @param pageNumber Numéro de la page courante
-     * @param searchPageSize Nombre maximum d'éléments dans la page courante
-     * @return Requête Hibernate mise à jour
      */
     protected Query insertPagingCriteria(Query query, int pageNumber, int searchPageSize) {
-        // Gestion de la pagination
+
         if (pageNumber != SortFilterPagingCriteria.ALL_PAGES) {
             query.setFirstResult(pageNumber * searchPageSize);
             query.setMaxResults(searchPageSize);
@@ -655,7 +550,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     public List<?> listForQueryNameWithFirstResults(String queryNameOrString, String[] properties, 
     	Object[] values,int firstResults) 
     {
-        // On essaie par le nom.
         Query query = null;
         try {
             if (!queryNameOrString.contains(" ")) {
@@ -668,11 +562,9 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
             query = null;
         }
         //
-        // Si cela ne marche pas on utile la chaine
         if (query == null) {
             query = getCurrentSession().createQuery(queryNameOrString);
         }
-        // S'il y a des parametres
         if (query.getNamedParameters().length > 0) {
             Object value;
             for (int i = 0; i < properties.length && i < values.length; i++) {
@@ -689,7 +581,6 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
         query.setFirstResult(firstResults);
         query.setMaxResults(appInfo.getMaxSearchPageSize());
 
-        // On retourne une liste
         return query.list();
     }
     

@@ -5,48 +5,45 @@ import java.util.Locale;
 import org.springframework.context.MessageSource;
 
 /**
- * Interface générique décrivant les méthodes à implémenter pour toute source de message.
+ * Generic Interface for message source handling
  * 
- * @author vboriesazeau
- * @version 1.0.0
  */
 public interface IMessageSource {
 
 	String PREFIX_MESSAGE_NOT_FOUND = "???";
     /**
-     * Retourne le composant de résolution de cette source de messages.
+     * Return the bundle used to resolved the paramaeters.
      * 
-     * @return Composant de résolution
+     * @return
      */
     public MessageSource getBundle();
 
     /**
-     * Met à jour le composant de résolution de cette source de messages.
+     * Updates the bundle used to resolve the parameters.
      * 
      * @param bundle Composant de résolution
      */
     public void setBundle(MessageSource bundle);
 
     /**
-     * Retourne les paramètres régionaux de cette source de messages.
+     * Return the current application locale
      * 
-     * @return Paramètres régionaux
+     * @return
      */
     public Locale getApplicationLocale();
 
     /**
-     * Met à jour les paramètres régionaux de cette source de messages.
+     * update the application locale.
      * 
-     * @param applicationLocale Paramètres régionaux
+     * @param applicationLocale
      */
     public void setApplicationLocale(Locale applicationLocale);
 
     /**
-     * Retourne le message résolu par cette source à partir de la clef spécifiée.
+     * Return the value for the given parameter key.
      * 
-     * @param key Clef du message
-     * @return Message associé à la clef, ou la clef elle-même si aucun message n'a pu être trouvé
-     *         pour cette clef.
+     * @param key
+     * @return 
      */
     public String getMessage(String key);
     
@@ -59,12 +56,11 @@ public interface IMessageSource {
     public String getMessageByLocale(String key, Locale locale);
 
     /**
-     * Retourne le message résolu par cette source à partir de la clef et du paramètre spécifié.
+     *  Return the message for the given key using the passed in value
      * 
-     * @param key Clef du message
-     * @param arg Paramètre du message
-     * @return Message associé à la clef, ou la clef elle-même si aucun message n'a pu être trouvé
-     *         pour cette clef.
+     * @param key
+     * @param arg
+     * @return 
      */
     public String getMessage(String key, Object arg);
     
@@ -78,12 +74,11 @@ public interface IMessageSource {
     public String getMessageByLocale(String key, Object arg, Locale locale);
 
     /**
-     * Retourne le message résolu par cette source à partir de la clef et des paramètres spécifiés.
+     * Return the message for the given key using the passed in values
      * 
      * @param key Clef du message
-     * @param args Tableau statique de paramètres du messages
-     * @return Message associé à la clef, ou la clef elle-même si aucun message n'a pu être trouvé
-     *         pour cette clef.
+     * @param args
+     * @return 
      */
     public String getMessage(String key, Object[] args);
     

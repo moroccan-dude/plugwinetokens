@@ -4,19 +4,11 @@ import com.plugwine.util.IMessageSource;
 
 
 /**
- * Interface définissant un gestionnaire générique.
+ * Abstract Manager interface.
  * 
- * @author vboriesazeau
  * @version 1.0.0
  */
 public interface AbstractManager {
-
-    /**
-     * Injecte la factory de service.
-     * 
-     * @param factory La factory de service.
-     */
-    //void setServiceFactory(ServiceFactory factory);
 
     /**
      * 

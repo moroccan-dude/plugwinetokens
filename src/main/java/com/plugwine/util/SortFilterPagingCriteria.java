@@ -4,41 +4,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe contenant les paramètres de tri et de filtrage pour les requêtes de recherche.
+ * Class that encapsulates all sorting and filtering for search requests
  * 
- * @author vboriesazeau
- * @version 1.0.0
  */
 public class SortFilterPagingCriteria implements Cloneable {
 
     /**
-     * Tri ascendant
+     * asc order
      */
     public static final String SORT_ORDER_ASC = "asc";
     /**
-     * Tri descendant
+     * desc order
      */
     public static final String SORT_ORDER_DESC = "desc";
 
     /**
-     * Obtenir tous les résultats en une fois (pas de pagination)
+     * no pagination (get all at once)
      */
     public static final int ALL_PAGES = -1;
 
     /**
-     * Ordre de tri
+     * Sorting order
      */
     private String sortOrder;
     /**
-     * Critère de tri (peut-être <code>null</code>)
+     * sorting criteria (can be <code>null</code>)
      */
     private String sortCriteria;
     /**
-     * Critères de filtrage (nom, valeur)
+     * filtering criteria (name, value...)
      */
     private Map<String, String> filterCriteria;
     /**
-     * Numéro de page à afficher
+     * page number to return
      */
     private int page;
 

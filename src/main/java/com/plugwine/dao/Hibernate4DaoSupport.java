@@ -4,26 +4,30 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.HibernateError;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.plugwine.util.transaction.SessionContextHolder;
 
 /**
  * Wrappers around new hibernate functionality.  Allows most spring 2 
  * style dao's to operate unchanged after being 
  * upgraded to Spring 3 and Hibernate 4.
- * @author Sam Thomas
  *
  */
+
 public class Hibernate4DaoSupport {
 	private SessionFactory sessionFactory;
 
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+	
 	// I cheated!
 	protected Hibernate4DaoSupport getHibernateTemplate(){
 		return this;
@@ -62,15 +66,17 @@ public class Hibernate4DaoSupport {
 			session =  sessionFactory.getCurrentSession();
 			
 		} catch (HibernateException he) {
-			try {
+			try 
+			{
+				/** this is only needed when no transaction has been opened prior to this call */
 				session = sessionFactory.openSession();
+				SessionContextHolder.setSession(session, true);
 			} catch (HibernateException e) {
-				e.printStackTrace();
-			}
-				
+				LOGGER.warn("unable to open a hibernate session manually",e);
+			}	
 		}
 		
-		return session;
+		return  session;
 	}
 	
 	/**

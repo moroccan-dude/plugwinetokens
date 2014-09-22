@@ -56,6 +56,7 @@ public class ConfigurationVariableValue implements java.io.Serializable {
     public String toString() {
 		if(getId()==null) 
 			return null;
-        return getClass().getSimpleName() + "[id:" + getId().getId() + "], [value:" + getId().getValue() + "]";
+		return getClass().getSimpleName() + "[id:" +  getId();
+      //  return getClass().getSimpleName() + "[id:" + getId().getId() + "], [value:" + getId().getValue() + "]";
     }
 }
