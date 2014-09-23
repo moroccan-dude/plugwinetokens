@@ -63,8 +63,8 @@ public interface GenericDao<T, ID extends Serializable> {
     /**
      * Persist an entity.
      * 
-     * @param entity l'entité
-     * @return l'entité persistente
+     * @param entity
+     * @return the persisted entity
      */
     T persist(T entity);
 

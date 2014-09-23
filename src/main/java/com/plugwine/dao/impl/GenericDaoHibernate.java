@@ -57,7 +57,7 @@ public class GenericDaoHibernate<T, ID extends Serializable> extends Hibernate4D
     /**
      * Constructor.
      * 
-     * @param entityClass la classe de l'entité
+     * @param entityClass
      */
     public GenericDaoHibernate(Class<T> entityClass) {
         entityType = entityClass;

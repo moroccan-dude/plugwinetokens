@@ -23,8 +23,4 @@
         </property>
     </bean>
 
-<!--     Configuration du template Hibernate utilisé dans les DAO. -->
-<!--     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"> -->
-<!--         <property name="sessionFactory" ref="sessionFactory" /> -->
-<!--     </bean> -->
 </beans>

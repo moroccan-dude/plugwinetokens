@@ -28,7 +28,7 @@ public class Hibernate4DaoSupport {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
-	// I cheated!
+	// this is the trick !
 	protected Hibernate4DaoSupport getHibernateTemplate(){
 		return this;
 	}

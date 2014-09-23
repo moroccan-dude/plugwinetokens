@@ -1,7 +1,5 @@
 package com.plugwine.util.transaction;
 
-
-
 import org.hibernate.Session;
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.core.NamedThreadLocal;
