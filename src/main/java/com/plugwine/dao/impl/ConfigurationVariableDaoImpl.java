@@ -11,15 +11,11 @@ public class ConfigurationVariableDaoImpl extends GenericDaoHibernate<Configurat
 {
 	@Override
 	public List<ConfigurationVariable> findAllVariables() {
-
 		return findAll();
-//		ArrayList<TokenHolder> tokens = new ArrayList<TokenHolder>(3);
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param1Value","Recette","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param2Value","Pre-Prod Amazon","PP, Prod","WinID- CopyReleaseAndSetStatus (COMBINED)","PP_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param3Value","Pre-Prod Amazon","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param4Value","Prod Amazon","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param5Value","Prod Amazon","PP, Prod","WinID- CopyReleaseAndSetStatus (COMBINED)","PP_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param6Value","Dev","CI DEV plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","CI_WINID"));
-//		return tokens;
+	}
+	
+	@Override
+	public ConfigurationVariable getVariableByName(String name) {
+		return (ConfigurationVariable)getByUniqueProperty("name",name);
 	}
 }

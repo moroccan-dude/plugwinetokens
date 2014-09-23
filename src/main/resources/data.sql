@@ -53,10 +53,10 @@ INSERT ApplicationVersion (Id, Name, StatusId, ReleasePathId, TeamFoundationServ
 
 INSERT Component (Id, Name, StatusId, PackageLocation, FileExtensionFilter, DeployerToolId, Command, Arguments, Timeout, VariableReplacementModeId, Description, TypeId, TeamFoundationServerId, TeamProjectCollectionId, TeamProject, BuildDefinition, ActionTypeId, CreatedOn, CreatedById, ModifiedOn, ModifiedById, IsDeleted, IsPublishedByMicrosoft) VALUES (3951, N'Modify Key', 2, N'', N'', 2006, N'IniUtility.exe', N'-ModifyKeyValue -INIFile "__INI File Name__" -SectionName "__Section Name__" -KeyName "__Old Key Name__" -NewKeyName "__New Key Name__" -CreateFileIfNotExists', 5, 1, N'Modify a key in a specific section', 4, 0, 0, N'', N'', 2, NOW(), 0, NOW(), 0, 0, 1);
 
-INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10507, N'INI File Name', 3951, 1, N'The name and path to the INI File', 0, 0, 1);
-INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10508, N'Section Name', 3951, 1, N'The section name where the key will be modified', 0, 0, 1);
-INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10509, N'ABC Key Name', 3951, 1, N'The old key name to be changed', 0, 0, 1);
-INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10510, N'New Key Name', 3951, 1, N'The new key name (leave empty if the key is not changed)', 0, 0, 1);
+INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10507, N'INIFile', 3951, 1, N'The name and path to the INI File', 0, 0, 1);
+INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10508, N'Section', 3951, 1, N'The section name where the key will be modified', 0, 0, 1);
+INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10509, N'ABC', 3951, 1, N'The old key name to be changed', 0, 0, 1);
+INSERT ConfigurationVariable (Id, Name, ComponentId, TypeId, Description, IsSystem, IsDeleted, IsParameter) VALUES (10510, N'New', 3951, 1, N'The new key name (leave empty if the key is not changed)', 0, 0, 1);
 
 INSERT ApplicationVersionStage (Id, ApplicationVersionId, StageId, Workflow) VALUES (2504, 11, 6, N'<DeploymentSequenceActivity>');
 INSERT ApplicationVersionStageActivity (Id, ComponentId, ApplicationVersionStageId, ServerId, WorkflowActivityId) VALUES (16912, 3951, 2504, 1005, N'a5e4124d-7b05-42d3-9770-b97b4d6b4738');

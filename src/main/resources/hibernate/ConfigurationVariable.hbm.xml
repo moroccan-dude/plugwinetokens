@@ -36,4 +36,8 @@
             <one-to-many class="com.plugwine.domain.model.ConfigurationVariableValue" />
         </set>
     </class>
+    <query name="getConfigurationVariableByName">
+        from ConfigurationVariable as entity
+        where entity.name = :name
+    </query>
 </hibernate-mapping>

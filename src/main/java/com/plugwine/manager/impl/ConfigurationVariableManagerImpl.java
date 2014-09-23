@@ -3,12 +3,12 @@ package com.plugwine.manager.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.hibernate.Hibernate;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import com.plugwine.dao.ConfigurationVariableDao;
-import com.plugwine.domain.holder.TokenHolder;
+import com.plugwine.domain.holder.VariableHolder;
 import com.plugwine.domain.model.ConfigurationVariable;
 import com.plugwine.domain.model.ConfigurationVariableValue;
 import com.plugwine.manager.ConfigurationVariableManager;
@@ -43,25 +43,41 @@ implements ConfigurationVariableManager {
     }
 	
 	@Override
-	public List<TokenHolder> findAllVariables() 
+	public VariableHolder findVariableByName(String name)
+	{
+		ConfigurationVariable configurationVariable = getDao().getVariableByName(name);
+		if(configurationVariable==null)
+			return null;
+		
+		return new VariableHolder((String)configurationVariable.getName(),getValues(configurationVariable));
+	}
+	
+	private String getValues(ConfigurationVariable variable)
+	{
+		Set<ConfigurationVariableValue> values = variable.getConfigurationVariableValues();
+		String stringVals = "";
+		for(ConfigurationVariableValue val : values)
+		{
+			stringVals += (String)val.getId().getValue() + ","; 
+		}
+		if (stringVals.endsWith(",")) 
+			stringVals = stringVals.substring(0,stringVals.length()-1);
+		
+		return stringVals;
+	}
+	
+	@Override
+	public List<VariableHolder> findAllVariables() 
 	{
 		List<ConfigurationVariable> variables =  getDao().findAllVariables();
 		
 		if(variables==null || variables.size()<=0)
-			return new ArrayList<TokenHolder>();
+			return new ArrayList<VariableHolder>();
 		
-		ArrayList<TokenHolder> tokens = new ArrayList<TokenHolder>(variables.size());
+		ArrayList<VariableHolder> tokens = new ArrayList<VariableHolder>(variables.size());
 		for (ConfigurationVariable variable : variables)
-		{
-			Set<ConfigurationVariableValue> values = variable.getConfigurationVariableValues();
-			String stringVals = "";
-			for(ConfigurationVariableValue val : values)
-			{
-				stringVals += (String)val.getId().getValue() + ","; 
-			}
-			if (stringVals.endsWith(",")) 
-				stringVals = stringVals.substring(0,stringVals.length()-1);
-			tokens.add(new TokenHolder((String)variable.getName(),stringVals,"Recette","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
+		{	
+			tokens.add(new VariableHolder((String)variable.getName(),getValues(variable)));
 		}
 		
 //		tokens.add(new TokenHolder("CONNECTIONSTRING","param1Value","Recette","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));

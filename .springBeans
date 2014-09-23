@@ -14,6 +14,7 @@
 		<config>src/main/resources/conf-business/application-context.xml</config>
 		<config>src/main/resources/conf-business/service-manager-context.xml</config>
 		<config>src/main/resources/conf-business/dao-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

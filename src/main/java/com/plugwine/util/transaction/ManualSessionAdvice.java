@@ -22,7 +22,7 @@ public class ManualSessionAdvice {
         	try
         	{
         		session.close();
-        		LOGGER.info("Manual Session closed successfully!!!");
+        		LOGGER.debug("Manual Session closed successfully!!!");
         	}
         	catch(Exception exception)
         	{

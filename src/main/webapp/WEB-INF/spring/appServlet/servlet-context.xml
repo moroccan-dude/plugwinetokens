@@ -26,13 +26,28 @@
 		<beans:property name="messageConverters">
 			<beans:list>
 				<beans:ref bean="jsonMessageConverter"/>
+				<beans:ref bean="xmlMessageConverter"/>
 			</beans:list>
 		</beans:property>
 	</beans:bean>
 	
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<beans:bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<beans:property name="supportedMediaTypes" value="application/json" />
 	</beans:bean>	
+	
+	<beans:bean id="xmlMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+    	<beans:constructor-arg ref="jaxb2Marshaller" />
+    	<beans:property name="supportedMediaTypes" value="application/xml"/>
+	</beans:bean>
+	
+	<beans:bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+				<beans:value>com.plugwine.domain.holder.VariableHolder</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
 	
 	<context:component-scan base-package="com.plugwine.controller" />
 	
