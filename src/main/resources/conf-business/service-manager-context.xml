@@ -9,7 +9,7 @@
     <bean id="appBundle" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>bundle/appbundle</value>
+                <value>classpath:bundle/appbundle</value>
             </list>
         </property>
         <property name="defaultEncoding" value="UTF-8" />
@@ -26,13 +26,25 @@
         <property name="messageSource" ref="businessMessageSource" />
     </bean>
 
+    <bean id="serviceFactory" class="com.plugwine.manager.ServiceFactory">
+    	<property name="configurationVariableManager" ref="configurationVariableManager" />
+        <property name="configurationVariableValueManager" ref="configurationVariableValueManager" />
+    </bean>
+ 
     <bean id="genericManager" class="com.plugwine.manager.impl.GenericManagerImpl"
         abstract="true" parent="abstractManager" />
 
-    <bean id="configurationManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl" parent="genericManager">
-          <constructor-arg ref="configurationVariableDao"/>
+    <bean id="configurationVariableValueManager" class="com.plugwine.manager.impl.ConfigurationVariableValueManagerImpl" parent="genericManager">
+          <constructor-arg ref="configurationVariableValueDao"/>
     </bean>
    
+    <bean id="configurationVariableManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl" parent="genericManager">
+          <constructor-arg ref="configurationVariableDao"/>
+    </bean>
+    
+    <!-- Enable the @AspectJ support -->
+ 	<aop:aspectj-autoproxy />
+ 	
     <bean id="manualSessionAdvice" class="com.plugwine.util.transaction.ManualSessionAdvice" />
      
 <!--     <aop:config> This is equivalent to adding @Aspect and the @After directive in the com.plugwine.util.transaction.ManualSessionAdvice class-->
@@ -42,6 +54,5 @@
 <!--         </aop:aspect> -->
 <!--     </aop:config> -->
     
-    <!-- Enable the @AspectJ support -->
- 	<aop:aspectj-autoproxy />
+   
 </beans>

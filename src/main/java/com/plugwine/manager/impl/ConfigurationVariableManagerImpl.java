@@ -11,12 +11,14 @@ import com.plugwine.dao.ConfigurationVariableDao;
 import com.plugwine.domain.holder.VariableHolder;
 import com.plugwine.domain.model.ConfigurationVariable;
 import com.plugwine.domain.model.ConfigurationVariableValue;
+import com.plugwine.domain.model.ConfigurationVariableValueId;
 import com.plugwine.manager.ConfigurationVariableManager;
+import com.plugwine.util.PlugwineAssertionError;
 
 
 // Note:
 // For some unknown reason the transational annotation at the class level does not always work.
-// Therefore, if a manager method requires a transaction execution, make sure to annotate it directly by the method.
+// Therefore, if a manager method requires a transaction execution, make sure to annotate it here directly at the method level.
 // (i.e do not solely rely on the annotations defined in GenericManagerImpl.
 @Service
 public class ConfigurationVariableManagerImpl extends GenericManagerImpl<ConfigurationVariable, Long> 
@@ -45,25 +47,12 @@ implements ConfigurationVariableManager {
 	@Override
 	public VariableHolder findVariableByName(String name)
 	{
+		PlugwineAssertionError.checkNotNull(name,getMessageSource().getMessage("variables.variable.alreadyExist"));
 		ConfigurationVariable configurationVariable = getDao().getVariableByName(name);
 		if(configurationVariable==null)
 			return null;
 		
-		return new VariableHolder((String)configurationVariable.getName(),getValues(configurationVariable));
-	}
-	
-	private String getValues(ConfigurationVariable variable)
-	{
-		Set<ConfigurationVariableValue> values = variable.getConfigurationVariableValues();
-		String stringVals = "";
-		for(ConfigurationVariableValue val : values)
-		{
-			stringVals += (String)val.getId().getValue() + ","; 
-		}
-		if (stringVals.endsWith(",")) 
-			stringVals = stringVals.substring(0,stringVals.length()-1);
-		
-		return stringVals;
+		return new VariableHolder((String)configurationVariable.getName(),formatVariableValues(configurationVariable));
 	}
 	
 	@Override
@@ -77,18 +66,42 @@ implements ConfigurationVariableManager {
 		ArrayList<VariableHolder> tokens = new ArrayList<VariableHolder>(variables.size());
 		for (ConfigurationVariable variable : variables)
 		{	
-			tokens.add(new VariableHolder((String)variable.getName(),getValues(variable)));
+			tokens.add(new VariableHolder((String)variable.getName(),formatVariableValues(variable)));
 		}
 		
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param1Value","Recette","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param2Value","Pre-Prod Amazon","PP, Prod","WinID- CopyReleaseAndSetStatus (COMBINED)","PP_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param3Value","Pre-Prod Amazon","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param4Value","Prod Amazon","Recette, PP, Prod Plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","R7_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param5Value","Prod Amazon","PP, Prod","WinID- CopyReleaseAndSetStatus (COMBINED)","PP_WINID"));
-//		tokens.add(new TokenHolder("CONNECTIONSTRING","param6Value","Dev","CI DEV plugwine","WinID- CopyReleaseAndSetStatus (COMBINED)","CI_WINID"));
-		
-		
 		return tokens;
+	}
+	
+	@Override
+	public VariableHolder addVariable(String name, String value)
+	{
+		VariableHolder holder = findVariableByName(name);
+		PlugwineAssertionError.checkFound(holder==null,getMessageSource().getMessage("variables.variable.alreadyExist"));
+        
+        ConfigurationVariable variable = null;
+//        try 
+//        {
+        	ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
+        	valValueId.setValue(value);
+        	valValueId.setServerId(3);
+        	valValueId.setConfigurationVariableId(10510);
+        	valValueId.setApplicationVersionStageActivityId(16912);
+        	
+        	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
+        	valValue.setId(valValueId);
+        	getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
+        	
+        	variable= new ConfigurationVariable();
+        	variable.setName((String)name);
+        	variable.getConfigurationVariableValues().add(valValue);
+        	
+        	variable = getDao().persist(variable);
+//        }
+//        catch(Exception exception) 
+//        {
+//        
+//        }
+        return  new VariableHolder((String)variable.getName(),formatVariableValues(variable));
 	}
 
 	@Override
@@ -99,6 +112,20 @@ implements ConfigurationVariableManager {
             //System.out.println("is inited? " + ((PersistentCollection) entity.getConfigurationVariableValues()).wasInitialized());
         }
 		
+	}
+	
+	private String formatVariableValues(ConfigurationVariable variable)
+	{
+		Set<ConfigurationVariableValue> values = variable.getConfigurationVariableValues();
+		String stringVals = "";
+		for(ConfigurationVariableValue val : values)
+		{
+			stringVals += (String)val.getId().getValue() + ","; 
+		}
+		if (stringVals.endsWith(",")) 
+			stringVals = stringVals.substring(0,stringVals.length()-1);
+		
+		return stringVals;
 	}
 
 }

@@ -45,10 +45,19 @@
 		<beans:property name="classesToBeBound">
 			<beans:list>
 				<beans:value>com.plugwine.domain.holder.VariableHolder</beans:value>
+				<beans:value>com.plugwine.web.PlugwineResultModel</beans:value>
 			</beans:list>
 		</beans:property>
 	</beans:bean>
 	
-	<context:component-scan base-package="com.plugwine.controller" />
+	<context:component-scan base-package="com.plugwine.web.controller" />
 	
+	<beans:bean id="controllerExceptionHandler" class="com.plugwine.web.ControllerExceptionHandler"/>
+	
+<!-- 	<beans:bean class="org.springframework.web.client.RestTemplate"> -->
+<!-- 	    <beans:property name="errorHandler"> -->
+<!-- 	        <beans:bean class="myapp.client.MyResponseErrorHandler" /> -->
+<!-- 	    </beans:property> -->
+<!-- 	</beans:bean> -->
+
 </beans:beans>

@@ -15,4 +15,17 @@ public interface AbstractManager {
      * @param messageSource
      */
     void setMessageSource(IMessageSource messageSource);
+    
+    /**
+     * 
+     * @return
+     */
+    public IMessageSource getMessageSource();
+    
+    /**
+     * Inject the service factory
+     * 
+     * @param factory
+     */
+    void setServiceFactory(ServiceFactory factory);
 }

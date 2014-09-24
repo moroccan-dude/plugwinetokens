@@ -3,10 +3,14 @@ package com.plugwine.domain.holder;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @XmlRootElement(name = "variable")
 public class VariableHolder {
 
+	@JsonProperty("name")
 	private String paramName;
+	@JsonProperty("val")
 	private String paramValue;
 	
 	public String getParamName() {

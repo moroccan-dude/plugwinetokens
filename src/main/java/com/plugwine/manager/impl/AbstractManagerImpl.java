@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.plugwine.manager.AbstractManager;
+import com.plugwine.manager.ServiceFactory;
 import com.plugwine.util.DefaultMessageSource;
 import com.plugwine.util.IMessageSource;
 
@@ -26,7 +27,8 @@ public abstract class AbstractManagerImpl implements AbstractManager {
     @Qualifier(value = "businessMessageSource")
     private IMessageSource messageSource;
 
-
+    private ServiceFactory serviceFactory;
+    
     /**
      * Default constructor
      */
@@ -37,7 +39,7 @@ public abstract class AbstractManagerImpl implements AbstractManager {
         return logger;
     }
 
-    protected final IMessageSource getMessageSource() {
+    public final IMessageSource getMessageSource() {
         if (messageSource == null) {
             logger.warn("Null messageSource found");
             //
@@ -55,5 +57,15 @@ public abstract class AbstractManagerImpl implements AbstractManager {
         this.messageSource = messageSource;
     }
 
+    protected final ServiceFactory getServiceFactory() {
+        return serviceFactory;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setServiceFactory(ServiceFactory factory) {
+        serviceFactory = factory;
+    }
 }

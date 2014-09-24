@@ -18,4 +18,5 @@ public class ConfigurationVariableDaoImpl extends GenericDaoHibernate<Configurat
 	public ConfigurationVariable getVariableByName(String name) {
 		return (ConfigurationVariable)getByUniqueProperty("name",name);
 	}
+	
 }
