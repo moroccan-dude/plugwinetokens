@@ -14,7 +14,11 @@ public class ServiceFactory {
      * The ConfigurationVariableValue Manager
      */
     private ConfigurationVariableValueManager configurationVariableValueManager;
-   
+    /**
+     * 
+     * @return
+     */
+    private ComponentManager componentManager;
 
     public ConfigurationVariableManager getConfigurationVariableManager() {
         return configurationVariableManager;
@@ -33,6 +37,15 @@ public class ServiceFactory {
         this.configurationVariableValueManager = configurationVariableValueManager;
         this.configurationVariableValueManager.setServiceFactory(this);
     }
+
+	public ComponentManager getComponentManager() {
+		return componentManager;
+	}
+
+	public void setComponentManager(ComponentManager componentManager) {
+		this.componentManager = componentManager;
+		 this.componentManager.setServiceFactory(this);
+	}
 
   
 }

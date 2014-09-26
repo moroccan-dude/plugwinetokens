@@ -29,6 +29,7 @@
     <bean id="serviceFactory" class="com.plugwine.manager.ServiceFactory">
     	<property name="configurationVariableManager" ref="configurationVariableManager" />
         <property name="configurationVariableValueManager" ref="configurationVariableValueManager" />
+        <property name="componentManager" ref="componentManager" />
     </bean>
  
     <bean id="genericManager" class="com.plugwine.manager.impl.GenericManagerImpl"
@@ -40,6 +41,10 @@
    
     <bean id="configurationVariableManager" class="com.plugwine.manager.impl.ConfigurationVariableManagerImpl" parent="genericManager">
           <constructor-arg ref="configurationVariableDao"/>
+    </bean>
+    
+    <bean id="componentManager" class="com.plugwine.manager.impl.ComponentManagerImpl" parent="genericManager">
+          <constructor-arg ref="componentDao"/>
     </bean>
     
     <!-- Enable the @AspectJ support -->

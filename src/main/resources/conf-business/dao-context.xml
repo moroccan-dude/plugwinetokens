@@ -10,4 +10,5 @@
     
     <bean id="configurationVariableDao" class="com.plugwine.dao.impl.ConfigurationVariableDaoImpl" parent="daoParent" />
     <bean id="configurationVariableValueDao" class="com.plugwine.dao.impl.ConfigurationVariableValueDaoImpl" parent="daoParent" />
+    <bean id="componentDao" class="com.plugwine.dao.impl.ComponentDaoImpl" parent="daoParent" />
 </beans>

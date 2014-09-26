@@ -128,15 +128,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     
     private ResponseEntity<Object> failureResponseEntity(HttpStatus httpStatus, int responseCode, String message, Exception ex)
     {
+    	String details = null;
     	if(ex!=null && ex.getMessage()!=null)
-    		message =  ex.getMessage();
+    		details =  ex.getMessage();
     	
     	if(ex!=null)
     		logger.error("HTTP Status:" + httpStatus.toString() + " - ResponseCode: "+ responseCode + " - message: " + message,ex);
     	else
     		logger.error("HTTP Status:" + httpStatus.toString() + " - ResponseCode: "+ responseCode + " - message: " + message);
     	
-    	return new ResponseEntity<Object>(PlugwineResultModel.failureResult(responseCode, message), 
+    	return new ResponseEntity<Object>(PlugwineResultModel.failureResult(responseCode, message, details), 
          		new HttpHeaders(), httpStatus);
         //return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }

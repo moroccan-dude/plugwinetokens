@@ -1,13 +1,17 @@
 package com.plugwine.web;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.plugwine.domain.holder.VariableHolder;
 import com.plugwine.util.Objects;
 
 @XmlRootElement(name = "result")
+@XmlSeeAlso({VariableHolder.class})
 public class PlugwineResultModel {
 	
 	@JsonProperty("status")
@@ -37,6 +41,7 @@ public class PlugwineResultModel {
 		return status;
 	}
 
+	@XmlElement(name="status")
 	public void setStatus(int status) {
 		this.status = status;
 	}
@@ -45,6 +50,7 @@ public class PlugwineResultModel {
 		return message;
 	}
 
+	@XmlElement(name="message")
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -53,14 +59,17 @@ public class PlugwineResultModel {
 		return details;
 	}
 
+	@XmlElement(name="details")
 	public void setDetails(String details) {
 		this.details = details;
 	}
 
+	
 	public Object getData() {
 		return data;
 	}
 
+	@XmlElement(name="data")
 	public void setData(Object data) {
 		this.data = data;
 	}
@@ -151,4 +160,9 @@ public class PlugwineResultModel {
         
         return true;
     }
+    
+	public String toString()
+	{
+		return "{status=" + this.status + ", message=" + this.message + ", details=" + this.details + ", {data=" + this.data + "} }";
+	}
 }

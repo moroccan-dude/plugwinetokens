@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.plugwine.domain.model.ConfigurationVariable;
 
-public interface ConfigurationVariableDao extends GenericDao<ConfigurationVariable, Long> 
+public interface ConfigurationVariableDao extends GenericDao<ConfigurationVariable, Integer> 
 {
 	List<ConfigurationVariable> findAllVariables();
 	

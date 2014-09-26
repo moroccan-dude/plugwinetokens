@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.plugwine.dao.ConfigurationVariableValueDao;
 import com.plugwine.domain.model.ConfigurationVariableValue;
+import com.plugwine.domain.model.ConfigurationVariableValueId;
 import com.plugwine.manager.ConfigurationVariableValueManager;
 
 
 @Service
-public class ConfigurationVariableValueManagerImpl extends GenericManagerImpl<ConfigurationVariableValue, Long> 
+public class ConfigurationVariableValueManagerImpl extends GenericManagerImpl<ConfigurationVariableValue, ConfigurationVariableValueId> 
 implements ConfigurationVariableValueManager {
 
 	public ConfigurationVariableValueManagerImpl()

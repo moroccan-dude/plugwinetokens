@@ -28,4 +28,12 @@
             <column name="ConfigurationVariableId" not-null="true" />
         </many-to-one>
     </class>
+    <query name="findAllConfigurationVariableValueByIds">
+        from ConfigurationVariableValue as entity
+        where entity.id.id in (:ids)
+    </query>
+    <query name="getConfigurationVariableValueById">
+        from ConfigurationVariableValue as entity
+        where entity.id.id = :id
+    </query>
 </hibernate-mapping>

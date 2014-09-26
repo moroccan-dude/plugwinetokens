@@ -57,7 +57,7 @@ public class ConfigurationVariable implements java.io.Serializable {
 		this.configurationVariableValues = configurationVariableValues;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 

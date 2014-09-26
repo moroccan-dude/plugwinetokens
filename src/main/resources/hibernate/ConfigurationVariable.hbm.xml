@@ -6,7 +6,7 @@
     <class name="ConfigurationVariable" table="ConfigurationVariable">
         <id name="id" type="int">
             <column name="Id" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <many-to-one name="component" class="com.plugwine.domain.model.Component" fetch="select">
             <column name="ComponentId" not-null="true" />

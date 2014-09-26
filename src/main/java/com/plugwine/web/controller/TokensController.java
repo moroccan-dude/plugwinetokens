@@ -30,12 +30,13 @@ public class TokensController {
 	@Autowired
 	private ConfigurationVariableManager configurationVariableManager;
 	
-	@RequestMapping(value = TokensURIConstants.GET_ALL_CONFVARIABLES, method = RequestMethod.GET)
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.GET)
 	public @ResponseBody PlugwineResultModel getAllVariables() {
 		logger.debug("Start getAllTokens.");
 		
 		List<VariableHolder> allTokens = configurationVariableManager.findAllVariables();
 		return PlugwineResultModel.successResult(allTokens);
+		//return PlugwineResultModel.successResult(new com.plugwine.domain.holder.PlugwineList<VariableHolder> (allTokens));
 	}
 	
 	/**
@@ -43,7 +44,7 @@ public class TokensController {
 	 * @param variableName
 	 * @return
 	 */
-	@RequestMapping(value = TokensURIConstants.GET_VARIABLE, method = RequestMethod.GET)
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE_NAME, method = RequestMethod.GET)
 	public @ResponseBody PlugwineResultModel getVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
@@ -59,7 +60,7 @@ public class TokensController {
 	 * @param variableName
 	 * @return
 	 */
-	@RequestMapping(value = TokensURIConstants.SEARCH_VARIABLE, method = RequestMethod.GET)
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE_SEARCH_NAME, method = RequestMethod.GET)
 	public @ResponseBody PlugwineResultModel findVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
@@ -67,7 +68,9 @@ public class TokensController {
 		return PlugwineResultModel.successResult(variableHolder);
 	}
 	
-	@RequestMapping(value = TokensURIConstants.CREATE_VARIABLE, method = RequestMethod.POST)
+	//@Requestbody converts the contents of incoming request body to method's parameter object using the messageconverters
+	//Same with @responsebody
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.POST)
 	public @ResponseBody PlugwineResultModel createVariable(@RequestBody VariableHolder variable) {
 		PlugwineAssertionError.checkNotNull(variable);
 		logger.debug("Start add Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
@@ -75,6 +78,35 @@ public class TokensController {
 		VariableHolder variableHolder = configurationVariableManager.addVariable(variable.getParamName(), variable.getParamValue());
 		return PlugwineResultModel.successResult(variableHolder);
 	}
+	
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.PUT)
+	public @ResponseBody PlugwineResultModel updateVariable(@RequestBody VariableHolder variable) {
+		PlugwineAssertionError.checkNotNull(variable);
+		logger.debug("Start update Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
+		
+		VariableHolder variableHolder =  configurationVariableManager.updateVariable(variable);
+		
+		return PlugwineResultModel.successResult(variableHolder);
+	}
+	
+//	private ConfigurationVariable DtoToHbm(VariableHolder variableHolder)
+//	{
+//		ConfigurationVariable variable = new ConfigurationVariable();
+//		variable.setName(variableHolder.getParamName());
+//		new Conf
+//		variable.getConfigurationVariableValues().add( )(variableHolder.getParamValue());
+//		Set<ConfigurationVariableValue> values = entity.getConfigurationVariableValues();
+//    	List<Integer> valueIds = new ArrayList<Integer>();
+//    	for(ConfigurationVariableValue vals : values)
+//    	{
+//    		valueIds.add(vals.getId().getId());
+//    	}
+//    	List<ConfigurationVariableValue> confVariableValues = getServiceFactory().getConfigurationVariableValueManager().getAllByIds(valueIds);
+//    	if (confVariableValues != null) {
+//             entity.setConfigurationVariableValues(new HashSet<ConfigurationVariableValue>(confVariableValues));
+//    	}
+//		return variable;
+//	}
 	
 	private IMessageSource getMessageSource()
 	{
