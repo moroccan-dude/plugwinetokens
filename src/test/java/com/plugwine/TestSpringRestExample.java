@@ -97,7 +97,7 @@ public class TestSpringRestExample {
 	    VariableHolder variable = new VariableHolder();
 		variable.setParamId(variableId);
 		variable.setParamName("ABC");
-		variable.setParamValue("updated abc val");
+		variable.setParamValue("updated abc val2");
 		
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(variable, getHeaders(MediaType.APPLICATION_JSON));
 	    RestTemplate template = getRestTemplate();

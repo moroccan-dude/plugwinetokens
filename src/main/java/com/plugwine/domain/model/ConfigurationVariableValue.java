@@ -1,5 +1,7 @@
 package com.plugwine.domain.model;
 
+import java.io.Serializable;
+
 // Generated Jun 9, 2014 11:41:12 AM by Hibernate Tools 3.4.0.CR1
 
 /**
@@ -14,16 +16,26 @@ public class ConfigurationVariableValue implements java.io.Serializable {
 	private ConfigurationVariableValueId id;
 	private ApplicationVersionStageActivity applicationVersionStageActivity;
 	private ConfigurationVariable configurationVariable;
-
+	private Serializable value;
+	
 	public ConfigurationVariableValue() {
+	}
+
+	public Serializable getValue() {
+		return this.value;
+	}
+
+	public void setValue(Serializable value) {
+		this.value = value;
 	}
 
 	public ConfigurationVariableValue(ConfigurationVariableValueId id,
 			ApplicationVersionStageActivity applicationVersionStageActivity,
-			ConfigurationVariable configurationVariable) {
+			ConfigurationVariable configurationVariable,Serializable value) {
 		this.id = id;
 		this.applicationVersionStageActivity = applicationVersionStageActivity;
 		this.configurationVariable = configurationVariable;
+		this.value = value;
 	}
 
 	public ConfigurationVariableValueId getId() {

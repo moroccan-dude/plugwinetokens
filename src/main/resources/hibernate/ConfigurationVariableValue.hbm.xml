@@ -17,10 +17,10 @@
             <key-property name="serverId" type="java.lang.Integer">
                 <column name="ServerId" />
             </key-property>
-            <key-property name="value" type="java.lang.String">
-                <column name="Value" />
-            </key-property>
         </composite-id>
+        <property name="value" type="java.lang.String">
+              <column name="Value" not-null="true"/>
+        </property>
         <many-to-one name="applicationVersionStageActivity" class="com.plugwine.domain.model.ApplicationVersionStageActivity" update="false" insert="false" fetch="select">
             <column name="ApplicationVersionStageActivityId" not-null="true" />
         </many-to-one>

@@ -17,28 +17,28 @@ public class ConfigurationVariableValueId implements java.io.Serializable {
 	private int applicationVersionStageActivityId;
 	private int configurationVariableId;
 	private Integer serverId;
-	private Serializable value;
+//	private Serializable value;
 
 	public ConfigurationVariableValueId() {
 	}
 
 	public ConfigurationVariableValueId(int id,
-			int applicationVersionStageActivityId, int configurationVariableId,
-			Serializable value) {
+			int applicationVersionStageActivityId, int configurationVariableId
+			) {
 		this.id = id;
 		this.applicationVersionStageActivityId = applicationVersionStageActivityId;
 		this.configurationVariableId = configurationVariableId;
-		this.value = value;
+		//this.value = value;
 	}
 
 	public ConfigurationVariableValueId(int id,
 			int applicationVersionStageActivityId, int configurationVariableId,
-			Integer serverId, Serializable value) {
+			Integer serverId) {
 		this.id = id;
 		this.applicationVersionStageActivityId = applicationVersionStageActivityId;
 		this.configurationVariableId = configurationVariableId;
 		this.serverId = serverId;
-		this.value = value;
+		//this.value = value;
 	}
 
 	public int getId() {
@@ -74,14 +74,6 @@ public class ConfigurationVariableValueId implements java.io.Serializable {
 		this.serverId = serverId;
 	}
 
-	public Serializable getValue() {
-		return this.value;
-	}
-
-	public void setValue(Serializable value) {
-		this.value = value;
-	}
-
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -99,10 +91,10 @@ public class ConfigurationVariableValueId implements java.io.Serializable {
 				&& ((this.getServerId() == castOther.getServerId()) || (this
 						.getServerId() != null
 						&& castOther.getServerId() != null && this
-						.getServerId().equals(castOther.getServerId())))
-				&& ((this.getValue() == castOther.getValue()) || (this
-						.getValue() != null && castOther.getValue() != null && this
-						.getValue().equals(castOther.getValue())));
+						.getServerId().equals(castOther.getServerId())));
+//				&& ((this.getValue() == castOther.getValue()) || (this
+//						.getValue() != null && castOther.getValue() != null && this
+//						.getValue().equals(castOther.getValue())));
 	}
 
 	public int hashCode() {
@@ -113,8 +105,8 @@ public class ConfigurationVariableValueId implements java.io.Serializable {
 		result = 37 * result + this.getConfigurationVariableId();
 		result = 37 * result
 				+ (getServerId() == null ? 0 : this.getServerId().hashCode());
-		result = 37 * result
-				+ (getValue() == null ? 0 : this.getValue().hashCode());
+//		result = 37 * result
+//				+ (getValue() == null ? 0 : this.getValue().hashCode());
 		return result;
 	}
 

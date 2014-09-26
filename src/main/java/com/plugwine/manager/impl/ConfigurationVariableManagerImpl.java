@@ -85,35 +85,30 @@ implements ConfigurationVariableManager {
 		PlugwineAssertionError.checkFound(holder==null,getMessageSource().getMessage("variables.variable.alreadyExist"));
         
         ConfigurationVariable variable = null;
-//        try 
-//        {
-        	ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
-        	valValueId.setValue(value);
-        	valValueId.setServerId(3);
-        	valValueId.setConfigurationVariableId(10510);
-        	valValueId.setApplicationVersionStageActivityId(16912);
-        	
-        	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
-        	valValue.setId(valValueId);
-        	valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
-        	
-        	variable= new ConfigurationVariable();
-        	variable.setName(name);
-        	variable.getConfigurationVariableValues().add(valValue);
-        	Component component = getServiceFactory().getComponentManager().get(3951);
-        	variable.setComponent(component);
-        	variable.setDescription("some Dummy Descr");
-        	variable.setIsDeleted(false);
-        	variable.setIsParameter(true);
-        	variable.setIsSystem(false);
-        	variable.setTypeId(1);
-        	variable = getDao().persist(variable);
-//        }
-//        catch(Exception exception) 
-//        {
-//        
-//        }
-        return  new VariableHolder(variable.getId(),(String)variable.getName(),formatVariableValues(variable));
+
+        ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
+    	valValueId.setServerId(3);
+    	valValueId.setConfigurationVariableId(10510);
+    	valValueId.setApplicationVersionStageActivityId(16912);
+    	
+    	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
+    	valValue.setId(valValueId);
+    	valValue.setValue(value);
+    	valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
+    	
+    	variable= new ConfigurationVariable();
+    	variable.setName(name);
+    	variable.getConfigurationVariableValues().add(valValue);
+    	Component component = getServiceFactory().getComponentManager().get(3951);
+    	variable.setComponent(component);
+    	variable.setDescription("some Dummy Descr");
+    	variable.setIsDeleted(false);
+    	variable.setIsParameter(true);
+    	variable.setIsSystem(false);
+    	variable.setTypeId(1);
+    	variable = getDao().persist(variable);
+
+    	return  new VariableHolder(variable.getId(),(String)variable.getName(),formatVariableValues(variable));
 	}
 
 	@Override
@@ -132,7 +127,7 @@ implements ConfigurationVariableManager {
 		String stringVals = "";
 		for(ConfigurationVariableValue val : values)
 		{
-			stringVals += (String)val.getId().getValue() + ","; 
+			stringVals += (String)val.getValue() + ","; 
 		}
 		if (stringVals.endsWith(",")) 
 			stringVals = stringVals.substring(0,stringVals.length()-1);
@@ -157,7 +152,7 @@ implements ConfigurationVariableManager {
     	if(valIterator.hasNext())
     	{
         	ConfigurationVariableValue value = valIterator.next();
-        	value.getId().setValue(variableHolder.getParamValue());
+        	value.setValue(variableHolder.getParamValue());
     	}
     	ConfigurationVariable updated = updateEntityFromModel(model);
     	
@@ -165,7 +160,7 @@ implements ConfigurationVariableManager {
     	String updateValue = null;
     	if(updatedVal.hasNext())
     	{
-    		updateValue = (String)updatedVal.next().getId().getValue();
+    		updateValue = (String)updatedVal.next().getValue();
     	}
     	return new VariableHolder(updated.getId(), (String)updated.getName(),updateValue); 
 	}
@@ -204,25 +199,17 @@ implements ConfigurationVariableManager {
 //    	entity.setIsSystem(model.isIsSystem());
 //    	entity.setTypeId(model.getTypeId());
     	// only update the values
-    	Set<ConfigurationVariableValue> values = model.getConfigurationVariableValues();
-//    	List<Integer> valueIds = new ArrayList<Integer>();
-    	//Set<ConfigurationVariableValue> newValues = new HashSet<ConfigurationVariableValue>();
-    	for(ConfigurationVariableValue vals : values)
+    	Set<ConfigurationVariableValue> newValues = model.getConfigurationVariableValues();
+    	Set<ConfigurationVariableValue> newVarValues = new HashSet<ConfigurationVariableValue>();
+    	for(ConfigurationVariableValue vals : newValues)
     	{
     		ConfigurationVariableValue confVariableValue = getServiceFactory().getConfigurationVariableValueManager().getByUniqueProperty("id", vals.getId().getId());
-    		confVariableValue.getId().setValue(vals.getId().getValue());
-    		//confVariableValue.getId().setServerId(vals.getId().getServerId());
-    		//newValues.add(confVariableValue);
-    		entity.getConfigurationVariableValues().add(confVariableValue);
+    		confVariableValue.setValue(vals.getValue());
+    		newVarValues.add(confVariableValue);
     	}
-//    	List<ConfigurationVariableValue> confVariableValues = getServiceFactory().getConfigurationVariableValueManager().getAllByIds(valueIds);
-//    	for(ConfigurationVariableValue valsToUpdate : confVariableValues)
-//    	{
-//    		confVariableValues.c
-//    	}
-    	
-    	//if (newValues != null) {
-         //    entity.setConfigurationVariableValues(new HashSet<ConfigurationVariableValue>(newValues));
-    	//}
+
+    	if (newVarValues != null) {
+             entity.setConfigurationVariableValues(new HashSet<ConfigurationVariableValue>(newVarValues));
+    	}
     }
 }
