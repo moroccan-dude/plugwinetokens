@@ -41,7 +41,7 @@ public class TestSpringRestExample {
 		
 //		testGetDummyEmployee();
 //		System.out.println("****************************************");
-//		testCreateVariable();
+//		testCreateVariable("restC199");
 //		System.out.println("****************************************");
 //		testGetVariableXML("Section"); // testing xml return
 //		System.out.println("****************************************");
@@ -54,8 +54,10 @@ public class TestSpringRestExample {
 //		testGetVariable("Section");
 //		System.out.println("****************************************");
 //		testGetAllVariables();
+//		System.out.println("****************************************");
+//		testUpdateVariable(10509);
 		System.out.println("****************************************");
-		testUpdateVariable(10509);
+		testDeleteVariable("restC199");
 	}
 
 	private static void testGetAllVariables() {
@@ -119,13 +121,43 @@ public class TestSpringRestExample {
 	}
 	
 	
-	private static void testCreateVariable() {
+	
+	private static void testDeleteVariable(String name) {
+//		curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"restCl5\",\"val\":\"restCl Val5\"}" http://localhost:8080/PlugwineTokens/rest/variables/
+		System.out.println("Delete Variable --JSON--");
+	    VariableHolder variable = new VariableHolder();
+		variable.setParamName(name);
+		variable.setParamValue("toto");
+		variable.setParamId(123);
+	    HttpEntity<?> requestEntity = new HttpEntity<Object>(variable, getHeaders(MediaType.APPLICATION_JSON));
+	    RestTemplate template = getRestTemplate();
+	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE,
+	    		HttpMethod.DELETE, requestEntity, String.class);
+	    //System.out.println(responseEntity);
+	    PlugwineResponseErrorHandler errorHandler = (PlugwineResponseErrorHandler)template.getErrorHandler();
+	    if(errorHandler.hasError())
+	    {
+	    	System.err.println("==ERROR:==");
+	    	System.err.println("ERROR_CODE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.CODE_KEY));
+	    	System.err.println("ERROR_MESSAGE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.BODY_KEY));
+	    }
+	    else 
+	    {
+	    	String newVariable = responseEntity.getBody();
+	    	System.out.println("found from jSON - body - : " + newVariable);
+		}
+//		RestTemplate restTemplate = new RestTemplate();
+		
+		//VariableHolder response = restTemplate.postForObject(SERVER_URI+TokensURIConstants.CREATE_VARIABLE, variable, VariableHolder.class);
+		//System.out.println("Variable " + name + " created!!" + response);
+	}
+	
+	private static void testCreateVariable(String name) {
 //		curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"restCl5\",\"val\":\"restCl Val5\"}" http://localhost:8080/PlugwineTokens/rest/variables/
 		System.out.println("Create Variable --JSON--");
 	    VariableHolder variable = new VariableHolder();
-		String name = "restCl4";
 		variable.setParamName(name);
-		variable.setParamValue("//restCl Val4");
+		variable.setParamValue("//restCl Val99");
 		
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(variable, getHeaders(MediaType.APPLICATION_JSON));
 	    RestTemplate template = getRestTemplate();
@@ -154,7 +186,7 @@ public class TestSpringRestExample {
 	{
 		System.out.println("Get Variable for variableName " + variableName + " --Object--");
 		//curl -H "Content-type:application/json" -H "Accept:application/json" http://localhost:8080/PlugwineTokens/rest/variable/Section"
-		PlugwineResultModel result = getRestTemplate().getForObject(SERVER_URI+TokensURIConstants.CTX_VARIABLE+variableName, PlugwineResultModel.class);
+		PlugwineResultModel result = getRestTemplate().getForObject(SERVER_URI+TokensURIConstants.CTX_VARIABLE+"/"+variableName, PlugwineResultModel.class);
 		System.out.println("found: " + result);
 	}
 	
@@ -163,7 +195,7 @@ public class TestSpringRestExample {
 		System.out.println("Get Variable for variableName '" + variableName + "' (JSON)");
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(getHeaders(MediaType.APPLICATION_JSON));
 	    RestTemplate template = getRestTemplate();
-	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+variableName, HttpMethod.GET, requestEntity, 
+	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+"/"+variableName, HttpMethod.GET, requestEntity, 
 	    		String.class);
 	    PlugwineResponseErrorHandler errorHandler = (PlugwineResponseErrorHandler)template.getErrorHandler();
 	    if(errorHandler.hasError())
@@ -207,7 +239,7 @@ public class TestSpringRestExample {
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(getHeaders(MediaType.APPLICATION_XML));
 	    
 	    RestTemplate template = getRestTemplate();
-	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+variableName, HttpMethod.GET, requestEntity, 
+	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+"/"+variableName, HttpMethod.GET, requestEntity, 
 	    		String.class);
 	    
 	    String variable = responseEntity.getBody();

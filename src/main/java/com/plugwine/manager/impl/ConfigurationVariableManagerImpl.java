@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,6 @@ import com.plugwine.domain.model.ConfigurationVariableValueId;
 import com.plugwine.manager.ConfigurationVariableManager;
 import com.plugwine.util.PlugwineAssertionError;
 
-
 // Note:
 // For some unknown reason the transational annotation at the class level does not always work.
 // Therefore, if a manager method requires a transaction execution, make sure to annotate it here directly at the method level.
@@ -29,6 +30,8 @@ import com.plugwine.util.PlugwineAssertionError;
 public class ConfigurationVariableManagerImpl extends GenericManagerImpl<ConfigurationVariable, Integer> 
 implements ConfigurationVariableManager {
 
+	private static final Logger logger = LoggerFactory.getLogger(ConfigurationVariableManagerImpl.class);
+	
 //	@Autowired
 //    private ConfigurationVariableDao configurationVariableDao;
 //	public void setConfigurationVariableDao(ConfigurationVariableDao configurationVariableDao) 
@@ -79,6 +82,18 @@ implements ConfigurationVariableManager {
 	
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public VariableHolder deleteVariable(String varName)
+	{
+		ConfigurationVariable configurationVariable = getDao().getVariableByName(varName);
+		PlugwineAssertionError.checkNotNull(configurationVariable,getMessageSource().getMessage("variables.variable.notFound"));
+        
+		getDao().delete(configurationVariable);
+		
+		return new VariableHolder(configurationVariable.getId(),(String)configurationVariable.getName(),formatVariableValues(configurationVariable));
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public VariableHolder addVariable(String name, String value)
 	{
 		VariableHolder holder = findVariableByName(name);
@@ -87,7 +102,16 @@ implements ConfigurationVariableManager {
         ConfigurationVariable variable = null;
 
         ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
-    	valValueId.setServerId(3);
+        //hack
+        int sId = 5;//default
+        try {
+        	String serverId = name.substring(name.length()-3, name.length());
+        	sId = Integer.parseInt(serverId);
+		} catch (Exception  e) {
+			logger.warn("Hack of sId failed...make sure your variable name ends with a 3 digit number",e);
+		}
+        
+    	valValueId.setServerId(sId);
     	valValueId.setConfigurationVariableId(10510);
     	valValueId.setApplicationVersionStageActivityId(16912);
     	

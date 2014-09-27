@@ -89,24 +89,15 @@ public class TokensController {
 		return PlugwineResultModel.successResult(variableHolder);
 	}
 	
-//	private ConfigurationVariable DtoToHbm(VariableHolder variableHolder)
-//	{
-//		ConfigurationVariable variable = new ConfigurationVariable();
-//		variable.setName(variableHolder.getParamName());
-//		new Conf
-//		variable.getConfigurationVariableValues().add( )(variableHolder.getParamValue());
-//		Set<ConfigurationVariableValue> values = entity.getConfigurationVariableValues();
-//    	List<Integer> valueIds = new ArrayList<Integer>();
-//    	for(ConfigurationVariableValue vals : values)
-//    	{
-//    		valueIds.add(vals.getId().getId());
-//    	}
-//    	List<ConfigurationVariableValue> confVariableValues = getServiceFactory().getConfigurationVariableValueManager().getAllByIds(valueIds);
-//    	if (confVariableValues != null) {
-//             entity.setConfigurationVariableValues(new HashSet<ConfigurationVariableValue>(confVariableValues));
-//    	}
-//		return variable;
-//	}
+	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.DELETE)
+	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody VariableHolder variable) {
+		PlugwineAssertionError.checkNotNull(variable);
+		logger.debug("Start delete Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
+		
+		VariableHolder variableHolder =  configurationVariableManager.deleteVariable(variable.getParamName());
+		
+		return PlugwineResultModel.successResult(variableHolder);
+	}
 	
 	private IMessageSource getMessageSource()
 	{

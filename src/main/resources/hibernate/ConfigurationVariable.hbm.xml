@@ -29,7 +29,7 @@
         <property name="isParameter" type="boolean">
             <column name="IsParameter" not-null="true" />
         </property>
-        <set name="configurationVariableValues" table="ConfigurationVariableValue" inverse="true" lazy="true" fetch="select">
+        <set name="configurationVariableValues" table="ConfigurationVariableValue" inverse="true" lazy="true" fetch="select" cascade="delete">
             <key>
                 <column name="ConfigurationVariableId" not-null="true" />
             </key>

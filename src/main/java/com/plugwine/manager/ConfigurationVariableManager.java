@@ -14,8 +14,8 @@ public interface ConfigurationVariableManager extends GenericManager<Configurati
 	
 	public VariableHolder addVariable(String name, String value);
 	
-	//public void mergeModelIntoEntity(ConfigurationVariable model, ConfigurationVariable entity);
-
 	public VariableHolder updateVariable(VariableHolder variable);
+	
+	public VariableHolder deleteVariable(String name);
 	
 }
