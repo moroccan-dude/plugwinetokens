@@ -58,7 +58,7 @@
 	<beans:bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<beans:property name="classesToBeBound">
 			<beans:list>
-				<beans:value>com.plugwine.domain.holder.VariableHolder</beans:value>
+				<beans:value>com.plugwine.domain.dto.VariableDto</beans:value>
 				<beans:value>com.plugwine.web.PlugwineResultModel</beans:value>
 <!-- 				<beans:value>com.plugwine.domain.holder.PlugwineList</beans:value> -->
 			</beans:list>
@@ -78,10 +78,6 @@
 	  <beans:ref bean="customLocaleHandler" />
 	</interceptors>
 
-<!-- 	<beans:bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
-<!-- 	    <beans:property name="interceptors"> -->
-<!-- 	        <beans:ref bean="localeChangeInterceptor" /> -->
-<!-- 	    </beans:property> -->
-<!-- 	</beans:bean> -->
+
 
 </beans:beans>

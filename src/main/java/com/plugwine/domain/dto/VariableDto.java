@@ -1,6 +1,4 @@
-package com.plugwine.domain.holder;
-
-import java.io.Serializable;
+package com.plugwine.domain.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @XmlRootElement(name = "variable")
-public class VariableHolder {
+public class VariableDto {
 
 	@JsonProperty("id")
 	private Integer paramId;
@@ -45,12 +43,12 @@ public class VariableHolder {
 		this.paramValue = paramValue;
 	}
 
-	public VariableHolder()
+	public VariableDto()
 	{
 		/*Default constructor  */
 	}
 	
-	public VariableHolder(Integer paramId, String paramName,String paramValue)
+	public VariableDto(Integer paramId, String paramName,String paramValue)
 	{
 		this.paramId = paramId;
 		this.paramName = paramName;

@@ -2,20 +2,20 @@ package com.plugwine.manager;
 
 import java.util.List;
 
-import com.plugwine.domain.holder.VariableHolder;
+import com.plugwine.domain.dto.VariableDto;
 import com.plugwine.domain.model.ConfigurationVariable;
 
 
 public interface ConfigurationVariableManager extends GenericManager<ConfigurationVariable, Integer> {
 
-	public List<VariableHolder> findAllVariables(); 
+	public List<VariableDto> findAllVariables(); 
 	
-	public VariableHolder findVariableByName(String name);
+	public VariableDto findVariableByName(String name);
 	
-	public VariableHolder addVariable(String name, String value);
+	public VariableDto addVariable(String name, String value);
 	
-	public VariableHolder updateVariable(VariableHolder variable);
+	public VariableDto updateVariable(VariableDto variable);
 	
-	public VariableHolder deleteVariable(String name);
+	public VariableDto deleteVariable(String name);
 	
 }

@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plugwine.domain.holder.VariableHolder;
+import com.plugwine.domain.dto.VariableDto;
 import com.plugwine.util.Objects;
 
 @XmlRootElement(name = "result")
-@XmlSeeAlso({VariableHolder.class})
+@XmlSeeAlso({VariableDto.class})
 public class PlugwineResultModel {
 	
 	@JsonProperty("status")

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.plugwine.dao.ConfigurationVariableDao;
-import com.plugwine.domain.holder.VariableHolder;
+import com.plugwine.domain.dto.VariableDto;
 import com.plugwine.domain.model.Component;
 import com.plugwine.domain.model.ConfigurationVariable;
 import com.plugwine.domain.model.ConfigurationVariableValue;
@@ -27,14 +27,14 @@ import com.plugwine.util.PlugwineAssertionError;
 // Therefore, if a manager method requires a transaction execution, make sure to annotate it here directly at the method level.
 // (i.e do not solely rely on the annotations defined in GenericManagerImpl.
 @Service
-public class ConfigurationVariableManagerImpl extends GenericManagerImpl<ConfigurationVariable, Integer> 
+public class ConfigurationVariableManagerImpl extends GenericManagerImpl<ConfigurationVariable, Integer>
 implements ConfigurationVariableManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigurationVariableManagerImpl.class);
-	
+
 //	@Autowired
 //    private ConfigurationVariableDao configurationVariableDao;
-//	public void setConfigurationVariableDao(ConfigurationVariableDao configurationVariableDao) 
+//	public void setConfigurationVariableDao(ConfigurationVariableDao configurationVariableDao)
 //	{
 //		this.configurationVariableDao = configurationVariableDao;
 //	}
@@ -42,72 +42,72 @@ implements ConfigurationVariableManager {
 	{
 		super();
 	}
-	
+
 	public ConfigurationVariableManagerImpl(ConfigurationVariableDao dao)
 	{
 		super(dao);
 	}
-	
+
 	protected ConfigurationVariableDao getDao() {
         return (ConfigurationVariableDao) getGenericDao();
     }
-	
+
 	@Override
-	public VariableHolder findVariableByName(String name)
+	public VariableDto findVariableByName(String name)
 	{
 		PlugwineAssertionError.checkNotNull(name,getMessageSource().getMessage("variables.variable.alreadyExist"));
 		ConfigurationVariable configurationVariable = getDao().getVariableByName(name);
 		if(configurationVariable==null)
 			return null;
-		
-		return new VariableHolder(configurationVariable.getId(),(String)configurationVariable.getName(),formatVariableValues(configurationVariable));
+
+		return new VariableDto(configurationVariable.getId(),(String)configurationVariable.getName(),formatVariableValues(configurationVariable));
 	}
-	
+
 	@Override
-	public List<VariableHolder> findAllVariables() 
+	public List<VariableDto> findAllVariables()
 	{
 		List<ConfigurationVariable> variables =  getDao().findAllVariables();
-		
+
 		if(variables==null || variables.size()<=0)
-			return new ArrayList<VariableHolder>();
-		
-		ArrayList<VariableHolder> tokens = new ArrayList<VariableHolder>(variables.size());
+			return new ArrayList<VariableDto>();
+
+		ArrayList<VariableDto> tokens = new ArrayList<VariableDto>(variables.size());
 		for (ConfigurationVariable variable : variables)
-		{	
-			tokens.add(new VariableHolder(variable.getId(),(String)variable.getName(),formatVariableValues(variable)));
+		{
+			tokens.add(new VariableDto(variable.getId(),(String)variable.getName(),formatVariableValues(variable)));
 		}
-		
+
 		return tokens;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public VariableHolder deleteVariable(String varName)
+	public VariableDto deleteVariable(String varName)
 	{
 		ConfigurationVariable configurationVariable = getDao().getVariableByName(varName);
 		PlugwineAssertionError.checkNotNull(configurationVariable,getMessageSource().getMessage("variables.variable.notFound",varName));
-        
+
 		getDao().delete(configurationVariable);
-		
-		return new VariableHolder(configurationVariable.getId(),(String)configurationVariable.getName(),formatVariableValues(configurationVariable));
+
+		return new VariableDto(configurationVariable.getId(),(String)configurationVariable.getName(),formatVariableValues(configurationVariable));
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public VariableHolder addVariable(String name, String value)
+	public VariableDto addVariable(String name, String value)
 	{
-		VariableHolder holder = findVariableByName(name);
+		VariableDto holder = findVariableByName(name);
 		PlugwineAssertionError.checkFound(holder==null,getMessageSource().getMessage("variables.variable.alreadyExist"));
-        
+
         ConfigurationVariable variable = null;
 
-      
-    	
+
+
     	//valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
-    	
+
     	variable= new ConfigurationVariable();
     	variable.setName(name);
-    	
+
     	Component component = getServiceFactory().getComponentManager().get(3951);
     	variable.setComponent(component);
     	variable.setDescription("some Dummy Descr");
@@ -126,18 +126,18 @@ implements ConfigurationVariableManager {
   		} catch (Exception  e) {
   			logger.warn("Hack of sId failed...make sure your variable name ends with a 3 digit number",e);
   		}
-          
+
       	valValueId.setServerId(sId);
       	valValueId.setConfigurationVariableId(variable.getId());
       	valValueId.setApplicationVersionStageActivityId(16912);
-      	
+
     	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
     	valValue.setId(valValueId);
     	valValue.setValue(value);
     	variable.getConfigurationVariableValues().add(valValue);
     	valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
-    	
-    	return  new VariableHolder(variable.getId(),(String)variable.getName(),formatVariableValues(variable));
+
+    	return  new VariableDto(variable.getId(),(String)variable.getName(),formatVariableValues(variable));
 	}
 
 	@Override
@@ -147,20 +147,20 @@ implements ConfigurationVariableManager {
             Hibernate.initialize(entity.getConfigurationVariableValues());
             //System.out.println("is inited? " + ((PersistentCollection) entity.getConfigurationVariableValues()).wasInitialized());
         }
-		
+
 	}
-	
+
 	private String formatVariableValues(ConfigurationVariable variable)
 	{
 		Set<ConfigurationVariableValue> values = variable.getConfigurationVariableValues();
 		String stringVals = "";
 		for(ConfigurationVariableValue val : values)
 		{
-			stringVals += (String)val.getValue() + ","; 
+			stringVals += (String)val.getValue() + ",";
 		}
-		if (stringVals.endsWith(",")) 
+		if (stringVals.endsWith(","))
 			stringVals = stringVals.substring(0,stringVals.length()-1);
-		
+
 		return stringVals;
 	}
 
@@ -169,31 +169,31 @@ implements ConfigurationVariableManager {
      */
     @Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public VariableHolder updateVariable(VariableHolder variableHolder) {
-    	ConfigurationVariable model = get(variableHolder.getParamId());
-    	PlugwineAssertionError.checkNotNull(model,getMessageSource().getMessage("variables.variable.notFound",variableHolder.getParamName()));
-    	
+	public VariableDto updateVariable(VariableDto variableDto) {
+    	ConfigurationVariable model = get(variableDto.getParamId());
+    	PlugwineAssertionError.checkNotNull(model,getMessageSource().getMessage("variables.variable.notFound",variableDto.getParamName()));
+
     	/* update the name */
-    	model.setName(variableHolder.getParamName());
+    	model.setName(variableDto.getParamName());
  		/* update the value */
     	Set<ConfigurationVariableValue> confVariableValues = model.getConfigurationVariableValues();
     	Iterator<ConfigurationVariableValue>  valIterator = confVariableValues.iterator();
     	if(valIterator.hasNext())
     	{
         	ConfigurationVariableValue value = valIterator.next();
-        	value.setValue(variableHolder.getParamValue());
+        	value.setValue(variableDto.getParamValue());
     	}
     	ConfigurationVariable updated = updateEntityFromModel(model);
-    	
+
     	Iterator<ConfigurationVariableValue> updatedVal = updated.getConfigurationVariableValues().iterator();
     	String updateValue = null;
     	if(updatedVal.hasNext())
     	{
     		updateValue = (String)updatedVal.next().getValue();
     	}
-    	return new VariableHolder(updated.getId(), (String)updated.getName(),updateValue); 
+    	return new VariableDto(updated.getId(), (String)updated.getName(),updateValue);
 	}
-	
+
 	/**
      * {@inheritDoc}
      */
@@ -207,7 +207,7 @@ implements ConfigurationVariableManager {
         return persist(entity);
     }
 
-    
+
     private ConfigurationVariable loadEntityFromModel(ConfigurationVariable model) {
         if (model.getId() != null) { /* re-attach it */
             return get(model.getId());
@@ -215,7 +215,7 @@ implements ConfigurationVariableManager {
             return new ConfigurationVariable();
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */

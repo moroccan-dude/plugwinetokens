@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.plugwine.domain.holder.VariableHolder;
+import com.plugwine.domain.dto.VariableDto;
 import com.plugwine.exceptions.EntityNotFoundException;
 import com.plugwine.i18n.IMessageSource;
 import com.plugwine.manager.ConfigurationVariableManager;
@@ -34,9 +34,9 @@ public class TokensController {
 	public @ResponseBody PlugwineResultModel getAllVariables() {
 		logger.debug("Start getAllTokens.");
 		
-		List<VariableHolder> allTokens = configurationVariableManager.findAllVariables();
+		List<VariableDto> allTokens = configurationVariableManager.findAllVariables();
 		return PlugwineResultModel.successResult(allTokens);
-		//return PlugwineResultModel.successResult(new com.plugwine.domain.holder.PlugwineList<VariableHolder> (allTokens));
+		//return PlugwineResultModel.successResult(new com.plugwine.domain.holder.PlugwineList<variableDto> (allTokens));
 	}
 	
 	/**
@@ -48,11 +48,11 @@ public class TokensController {
 	public @ResponseBody PlugwineResultModel getVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
-		VariableHolder variableHolder =  configurationVariableManager.findVariableByName(variableName);
-		PlugwineAssertionError.checkNotNull(variableHolder, 
+		VariableDto variableDto =  configurationVariableManager.findVariableByName(variableName);
+		PlugwineAssertionError.checkNotNull(variableDto, 
 				new EntityNotFoundException(getMessageSource().getMessage("variables.variable.notFound","[name="+variableName+"]")));
 		
-		return PlugwineResultModel.successResult(variableHolder);
+		return PlugwineResultModel.successResult(variableDto);
 	}
 	
 	/**
@@ -64,43 +64,43 @@ public class TokensController {
 	public @ResponseBody PlugwineResultModel findVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
-		VariableHolder variableHolder =  configurationVariableManager.findVariableByName(variableName);
-		return PlugwineResultModel.successResult(variableHolder);
+		VariableDto variableDto =  configurationVariableManager.findVariableByName(variableName);
+		return PlugwineResultModel.successResult(variableDto);
 	}
 	
 	//@Requestbody converts the contents of incoming request body to method's parameter object using the messageconverters
 	//Same with @responsebody
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.POST)
-	public @ResponseBody PlugwineResultModel createVariable(@RequestBody VariableHolder variable) {
+	public @ResponseBody PlugwineResultModel createVariable(@RequestBody VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
 		
 		logger.debug("Start add Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
-		VariableHolder variableHolder = configurationVariableManager.addVariable(variable.getParamName(), variable.getParamValue());
-		return PlugwineResultModel.successResult(variableHolder);
+		VariableDto variableDto = configurationVariableManager.addVariable(variable.getParamName(), variable.getParamValue());
+		return PlugwineResultModel.successResult(variableDto);
 	}
 	
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.PUT)
-	public @ResponseBody PlugwineResultModel updateVariable(@RequestBody VariableHolder variable) {
+	public @ResponseBody PlugwineResultModel updateVariable(@RequestBody VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
 		logger.debug("Start update Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
-		VariableHolder variableHolder =  configurationVariableManager.updateVariable(variable);
+		VariableDto variableDto =  configurationVariableManager.updateVariable(variable);
 		
-		return PlugwineResultModel.successResult(variableHolder);
+		return PlugwineResultModel.successResult(variableDto);
 	}
 	
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.DELETE)
-	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody(required=false) VariableHolder variable) {
+	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody(required=false) VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
 		logger.debug("Start delete Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
-		VariableHolder variableHolder =  configurationVariableManager.deleteVariable(variable.getParamName());
+		VariableDto variableDto =  configurationVariableManager.deleteVariable(variable.getParamName());
 		
-		return PlugwineResultModel.successResult(variableHolder);
+		return PlugwineResultModel.successResult(variableDto);
 	}
 	
 	private IMessageSource getMessageSource()
