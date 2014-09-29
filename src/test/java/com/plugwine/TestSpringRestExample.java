@@ -213,9 +213,9 @@ public class TestSpringRestExample {
 	
 	private static void testGetVariableJsonCORS()
 	{
-		System.out.println("Testing case of error.....");
+		System.out.println("-------------Testing case of error....-------------");
 		testCor("Sec");
-		System.out.println("Testing case of success.....");
+		System.out.println("-------------Testing case of success....-------------");
 		testCor("Section");
 	}
 	
@@ -230,11 +230,13 @@ public class TestSpringRestExample {
 	    PlugwineResponseErrorHandler errorHandler = (PlugwineResponseErrorHandler)template.getErrorHandler();
 	    if(errorHandler.hasError())
 	    {
-	    	System.out.println("ERROR!");	
+	    	System.out.println("ERROR!");
+	    	System.err.println("ERROR_CODE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.CODE_KEY));
+	    	System.err.println("ERROR_MESSAGE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.BODY_KEY));
 	    }
 	    else 
 	    {
-	    	System.out.println("SUCCESS!");
+	    	System.out.println("SUCCESS!" + responseEntity.getBody());
 		}
 	    System.out.println("Response Headers: ");
 	    

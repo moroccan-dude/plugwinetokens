@@ -13,7 +13,7 @@ public class ManualSessionAdvice {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
-	@After(value = "@target(com.plugwine.util.transaction.ReadOnlyTransaction) && target(com.plugwine.manager.GenericManager)")
+	@After(value = "@target(com.plugwine.util.transaction.ReadOnlyTransaction) && target(com.plugwine.manager.common.GenericManager)")
     public void cleanupManualSession(){
 		LOGGER.debug("Running cleanupManualSession Advice.");
         Session session = SessionContextHolder.getSessionContext();

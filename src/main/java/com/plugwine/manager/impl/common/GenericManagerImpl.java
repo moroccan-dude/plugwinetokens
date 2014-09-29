@@ -1,4 +1,4 @@
-package com.plugwine.manager.impl;
+package com.plugwine.manager.impl.common;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.plugwine.dao.GenericDao;
-import com.plugwine.manager.GenericManager;
+import com.plugwine.dao.common.GenericDao;
+import com.plugwine.manager.common.GenericManager;
 import com.plugwine.util.transaction.ReadOnlyTransaction;
 
 

@@ -1,4 +1,4 @@
-package com.plugwine.dao;
+package com.plugwine.dao.impl.common;
 
 import java.io.Serializable;
 import java.util.Collection;

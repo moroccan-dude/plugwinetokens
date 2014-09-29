@@ -3,7 +3,7 @@
     xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
        
-    <bean id="daoParent" abstract="true" class="com.plugwine.dao.impl.GenericDaoHibernate">
+    <bean id="daoParent" abstract="true" class="com.plugwine.dao.impl.common.GenericDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory" />
         <property name="appInfo" ref="appInfo" />
     </bean>

@@ -1,4 +1,8 @@
-package com.plugwine.manager;
+package com.plugwine.manager.common;
+
+import com.plugwine.manager.ComponentManager;
+import com.plugwine.manager.ConfigurationVariableManager;
+import com.plugwine.manager.ConfigurationVariableValueManager;
 
 /**
  * The Service Factory allows the manager layer to access all managers

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.plugwine.domain.dto.VariableDto;
 import com.plugwine.domain.model.ConfigurationVariable;
+import com.plugwine.manager.common.GenericManager;
 
 
 public interface ConfigurationVariableManager extends GenericManager<ConfigurationVariable, Integer> {

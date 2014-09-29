@@ -1,4 +1,4 @@
-package com.plugwine.manager;
+package com.plugwine.manager.common;
 
 import com.plugwine.i18n.IMessageSource;
 

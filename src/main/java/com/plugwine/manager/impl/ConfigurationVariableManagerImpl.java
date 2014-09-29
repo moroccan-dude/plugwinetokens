@@ -20,6 +20,7 @@ import com.plugwine.domain.model.ConfigurationVariable;
 import com.plugwine.domain.model.ConfigurationVariableValue;
 import com.plugwine.domain.model.ConfigurationVariableValueId;
 import com.plugwine.manager.ConfigurationVariableManager;
+import com.plugwine.manager.impl.common.GenericManagerImpl;
 import com.plugwine.util.PlugwineAssertionError;
 
 // Note:

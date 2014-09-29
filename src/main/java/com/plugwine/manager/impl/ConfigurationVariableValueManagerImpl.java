@@ -7,6 +7,7 @@ import com.plugwine.dao.ConfigurationVariableValueDao;
 import com.plugwine.domain.model.ConfigurationVariableValue;
 import com.plugwine.domain.model.ConfigurationVariableValueId;
 import com.plugwine.manager.ConfigurationVariableValueManager;
+import com.plugwine.manager.impl.common.GenericManagerImpl;
 
 
 @Service

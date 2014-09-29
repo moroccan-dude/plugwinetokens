@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.plugwine.dao.ComponentDao;
 import com.plugwine.domain.model.Component;
 import com.plugwine.manager.ComponentManager;
+import com.plugwine.manager.impl.common.GenericManagerImpl;
 
 
 

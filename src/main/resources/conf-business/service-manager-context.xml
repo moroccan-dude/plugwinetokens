@@ -22,18 +22,18 @@
     </bean>
     
    <!-- base class for the entity model manager -->
-    <bean id="abstractManager" class="com.plugwine.manager.impl.AbstractManagerImpl"
+    <bean id="abstractManager" class="com.plugwine.manager.impl.common.AbstractManagerImpl"
         abstract="true">
         <property name="messageSource" ref="businessMessageSource" />
     </bean>
 
-    <bean id="serviceFactory" class="com.plugwine.manager.ServiceFactory">
+    <bean id="serviceFactory" class="com.plugwine.manager.common.ServiceFactory">
     	<property name="configurationVariableManager" ref="configurationVariableManager" />
         <property name="configurationVariableValueManager" ref="configurationVariableValueManager" />
         <property name="componentManager" ref="componentManager" />
     </bean>
  
-    <bean id="genericManager" class="com.plugwine.manager.impl.GenericManagerImpl"
+    <bean id="genericManager" class="com.plugwine.manager.impl.common.GenericManagerImpl"
         abstract="true" parent="abstractManager" />
 
     <bean id="configurationVariableValueManager" class="com.plugwine.manager.impl.ConfigurationVariableValueManagerImpl" parent="genericManager">

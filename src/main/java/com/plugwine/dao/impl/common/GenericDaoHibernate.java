@@ -1,4 +1,4 @@
-package com.plugwine.dao.impl;
+package com.plugwine.dao.impl.common;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -16,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.plugwine.dao.GenericDao;
-import com.plugwine.dao.Hibernate4DaoSupport;
+import com.plugwine.dao.common.GenericDao;
 import com.plugwine.util.AppInfo;
 import com.plugwine.util.SortFilterPagingCriteria;
 

@@ -1,4 +1,4 @@
-package com.plugwine.manager.impl;
+package com.plugwine.manager.impl.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.plugwine.i18n.DefaultMessageSource;
 import com.plugwine.i18n.IMessageSource;
-import com.plugwine.manager.AbstractManager;
-import com.plugwine.manager.ServiceFactory;
+import com.plugwine.manager.common.AbstractManager;
+import com.plugwine.manager.common.ServiceFactory;
 
 
 /**
