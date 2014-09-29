@@ -52,31 +52,30 @@ public class TestSpringRestExample {
 
 		return restTemplate;
 	}
-	public static void main(String args[]){
-
-//		testGetDummyEmployee();
+	public static void main(String args[])
+	{
 		System.out.println("****************************************");
-//		testCreateVariable("restC200");
+//		testCreateVariable("restC200"); // create (POST)
 //		System.out.println("****************************************");
 //		testGetVariableXML("Section"); // testing xml return
 //		System.out.println("****************************************");
 //		testGetVariableJson("Sec"); // testing invalid variable, expecting error
 //		System.out.println("****************************************");
-//		testGetVariableJson("Section"); // testing OK
+//		testGetVariableJson("Section"); // testing GET/{name} OK, JSON content-type
 //		System.out.println("****************************************");
 //		testSearchVariableJson("Abcdef"); // testing invalid variable, but no error
 //		System.out.println("****************************************");
-//		testGetVariable("Section");
+//		testGetVariable("Section"); // testing GET/{name} OK, no content-type, testing default
 //		System.out.println("****************************************");
-//		testGetAllVariables();
+//		testGetAllVariables(); // testing GET ALL 
 //		System.out.println("****************************************");
-//		testUpdateVariable(10509);
+//		testUpdateVariable(10509); // testing PUT
 //		System.out.println("****************************************");
-//		testDeleteVariable("restC202");
+//		testDeleteVariable("restC202"); // testing DELETE
 //		System.out.println("****************************************");
 //		testGetVariableJsonFR("Sec"); // testing invalid variable, expecting error in French
 		System.out.println("****************************************");
-		testGetVariableJsonCORS(); // testing invalid variable, expecting error in French
+		testGetVariableJsonCORS(); // testing CORS support
 	}
 
 	private static void testGetAllVariables() {

@@ -5,5 +5,5 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!--  cors filter -->
-	<bean id="corsFilter" class="com.plugwine.util.CorsFilter"/>
+	<bean id="corsFilter" class="com.plugwine.web.filters.CorsFilter"/>
 </beans>

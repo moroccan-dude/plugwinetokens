@@ -1,4 +1,4 @@
-package com.plugwine.util;
+package com.plugwine.web.filters;
 
 import java.io.IOException;
 
