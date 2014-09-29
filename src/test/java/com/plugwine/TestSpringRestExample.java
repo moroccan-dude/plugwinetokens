@@ -1,14 +1,16 @@
 package com.plugwine;
 
-
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.http.client.methods.HttpUriRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.plugwine.domain.holder.VariableHolder;
@@ -25,7 +27,7 @@ public class TestSpringRestExample {
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(mediaType);
 	    headers.setAccept(Arrays.asList(mediaType));
-		
+
 		return headers;
 	}
 	
@@ -34,18 +36,33 @@ public class TestSpringRestExample {
 		RestTemplate restTemplate = new RestTemplate();
 		PlugwineResponseErrorHandler errorHandler = new PlugwineResponseErrorHandler();
 		restTemplate.setErrorHandler(errorHandler);
+
+		// BUG for delete entity!! and REST TEMPLATE.
+//	    
+//	    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory() {
+//	        @Override
+//	        protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
+////	            if (HttpMethod.DELETE == httpMethod) {
+////	                return new HttpEntityEnclosingDeleteRequest(uri);
+////	            }
+//	            return super.createHttpUriRequest(httpMethod, uri);
+//	        }
+//	    });
 		
+	    
 		return restTemplate;
 	}
 	public static void main(String args[]){
 		
 //		testGetDummyEmployee();
-//		System.out.println("****************************************");
-//		testCreateVariable("restC199");
+		System.out.println("****************************************");
+//		testCreateVariable("restC200");
 //		System.out.println("****************************************");
 //		testGetVariableXML("Section"); // testing xml return
 //		System.out.println("****************************************");
 //		testGetVariableJson("Sec"); // testing invalid variable, expecting error
+		System.out.println("****************************************");
+		testGetVariableJsonFR("Sec"); // testing invalid variable, expecting error in French
 //		System.out.println("****************************************");
 //		testGetVariableJson("Section"); // testing OK
 //		System.out.println("****************************************");
@@ -56,8 +73,8 @@ public class TestSpringRestExample {
 //		testGetAllVariables();
 //		System.out.println("****************************************");
 //		testUpdateVariable(10509);
-		System.out.println("****************************************");
-		testDeleteVariable("restC199");
+//		System.out.println("****************************************");
+//		testDeleteVariable("restC202");
 	}
 
 	private static void testGetAllVariables() {
@@ -123,12 +140,13 @@ public class TestSpringRestExample {
 	
 	
 	private static void testDeleteVariable(String name) {
-//		curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"restCl5\",\"val\":\"restCl Val5\"}" http://localhost:8080/PlugwineTokens/rest/variables/
+//		curl -X DELETE -H "Content-Type: application/json" -d "{\"name\":\"restC200\",\"val\":\"toto\",\"id\":\"123\"}" http://localhost:8080/PlugwineTokens/rest/variables
+		//System.setProperty("sun.net.client.defaultReadTimeout","10000"); 
 		System.out.println("Delete Variable --JSON--");
-	    VariableHolder variable = new VariableHolder();
+		VariableHolder variable = new VariableHolder();
 		variable.setParamName(name);
 		variable.setParamValue("toto");
-		variable.setParamId(123);
+		variable.setParamId(1111);
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(variable, getHeaders(MediaType.APPLICATION_JSON));
 	    RestTemplate template = getRestTemplate();
 	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE,
@@ -158,6 +176,7 @@ public class TestSpringRestExample {
 	    VariableHolder variable = new VariableHolder();
 		variable.setParamName(name);
 		variable.setParamValue("//restCl Val99");
+		variable.setParamId(1111);
 		
 	    HttpEntity<?> requestEntity = new HttpEntity<Object>(variable, getHeaders(MediaType.APPLICATION_JSON));
 	    RestTemplate template = getRestTemplate();
@@ -190,10 +209,34 @@ public class TestSpringRestExample {
 		System.out.println("found: " + result);
 	}
 	
+	private static void testGetVariableJsonFR(String variableName) 
+	{
+		System.out.println("Get Variable for variableName '" + variableName + "' (JSON)");
+		HttpHeaders headers = getHeaders(MediaType.APPLICATION_JSON);
+		headers.add("accept-language", "fr_FR");
+	    HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
+	    RestTemplate template = getRestTemplate();
+	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+"/"+variableName, HttpMethod.GET, requestEntity, 
+	    		String.class);
+	    PlugwineResponseErrorHandler errorHandler = (PlugwineResponseErrorHandler)template.getErrorHandler();
+	    if(errorHandler.hasError())
+	    {
+	    	System.err.println("==ERROR:==");
+	    	System.err.println("ERROR_CODE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.CODE_KEY));
+	    	System.err.println("ERROR_MESSAGE: " + errorHandler.getErrorDetails().get(PlugwineResponseErrorHandler.BODY_KEY));
+	    }
+	    else 
+	    {
+	    	String variable = responseEntity.getBody();
+	    	System.out.println("found from jSON - body - : " + variable);
+		}
+	}
+	
 	private static void testGetVariableJson(String variableName) 
 	{
 		System.out.println("Get Variable for variableName '" + variableName + "' (JSON)");
-	    HttpEntity<?> requestEntity = new HttpEntity<Object>(getHeaders(MediaType.APPLICATION_JSON));
+		HttpHeaders headers = getHeaders(MediaType.APPLICATION_JSON);
+	    HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
 	    RestTemplate template = getRestTemplate();
 	    ResponseEntity<String> responseEntity = template.exchange(SERVER_URI+TokensURIConstants.CTX_VARIABLE+"/"+variableName, HttpMethod.GET, requestEntity, 
 	    		String.class);

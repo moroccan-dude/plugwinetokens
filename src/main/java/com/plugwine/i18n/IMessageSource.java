@@ -1,4 +1,4 @@
-package com.plugwine.util;
+package com.plugwine.i18n;
 
 import java.util.Locale;
 

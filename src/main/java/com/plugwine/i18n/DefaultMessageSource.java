@@ -1,8 +1,10 @@
-package com.plugwine.util;
+package com.plugwine.i18n;
 
 import java.util.Locale;
 
 import org.apache.commons.lang.LocaleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 
 
@@ -12,10 +14,17 @@ import org.springframework.context.MessageSource;
  */
 public class DefaultMessageSource implements IMessageSource {
 
+	private static final Logger logger = LoggerFactory.getLogger(DefaultMessageSource.class);
+	
     /**
      * Bundle
      */
     private MessageSource bundle;
+    
+    /**
+     * Default locale
+     */
+    private Locale defaultLocale;
    
     //private Locale applicationLocale = null;
 
@@ -72,5 +81,19 @@ public class DefaultMessageSource implements IMessageSource {
 	@Override
 	public String getMessageByLocale(String key, Object[] args, Locale locale) {
 		return bundle.getMessage(key, args, PREFIX_MESSAGE_NOT_FOUND + " " + key + " " + PREFIX_MESSAGE_NOT_FOUND, locale);
+	}
+
+	public Locale getDefaultLocale() {
+		return defaultLocale;
+	}
+
+	public void setDefaultLocale(Locale defaultLocale) 
+	{
+		this.defaultLocale = defaultLocale;
+		if(defaultLocale!=null && LocaleUtils.isAvailableLocale(defaultLocale))
+		{
+			logger.info("Server default locale is: " + defaultLocale);
+			Locale.setDefault(defaultLocale);
+		}
 	}
 }

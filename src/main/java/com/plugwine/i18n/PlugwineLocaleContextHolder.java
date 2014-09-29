@@ -1,10 +1,9 @@
-package com.plugwine.util;
+package com.plugwine.i18n;
 
 import java.util.Locale;
 
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.SimpleLocaleContext;
-
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.core.NamedThreadLocal;
 

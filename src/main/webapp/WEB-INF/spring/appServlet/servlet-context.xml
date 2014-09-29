@@ -71,4 +71,17 @@
 	<!-- Global Exception handler -->
 	<beans:bean id="controllerExceptionHandler" class="com.plugwine.web.ControllerExceptionHandler"/>
 
+    <!--  localisation -->
+	<beans:bean id="customLocaleHandler" class="com.plugwine.i18n.PlugwineLocaleChangeInterceptor"/>
+
+	<interceptors>
+	  <beans:ref bean="customLocaleHandler" />
+	</interceptors>
+
+<!-- 	<beans:bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
+<!-- 	    <beans:property name="interceptors"> -->
+<!-- 	        <beans:ref bean="localeChangeInterceptor" /> -->
+<!-- 	    </beans:property> -->
+<!-- 	</beans:bean> -->
+
 </beans:beans>

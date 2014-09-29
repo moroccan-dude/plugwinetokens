@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.plugwine.i18n.DefaultMessageSource;
+import com.plugwine.i18n.IMessageSource;
 import com.plugwine.manager.AbstractManager;
 import com.plugwine.manager.ServiceFactory;
-import com.plugwine.util.DefaultMessageSource;
-import com.plugwine.util.IMessageSource;
 
 
 /**

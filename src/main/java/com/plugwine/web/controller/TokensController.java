@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.plugwine.domain.holder.VariableHolder;
 import com.plugwine.exceptions.EntityNotFoundException;
+import com.plugwine.i18n.IMessageSource;
 import com.plugwine.manager.ConfigurationVariableManager;
-import com.plugwine.util.IMessageSource;
 import com.plugwine.util.PlugwineAssertionError;
 import com.plugwine.web.PlugwineResultModel;
 
@@ -72,7 +72,9 @@ public class TokensController {
 	//Same with @responsebody
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.POST)
 	public @ResponseBody PlugwineResultModel createVariable(@RequestBody VariableHolder variable) {
-		PlugwineAssertionError.checkNotNull(variable);
+		PlugwineAssertionError.checkNotNull(variable,
+				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
+		
 		logger.debug("Start add Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
 		VariableHolder variableHolder = configurationVariableManager.addVariable(variable.getParamName(), variable.getParamValue());
@@ -81,7 +83,8 @@ public class TokensController {
 	
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.PUT)
 	public @ResponseBody PlugwineResultModel updateVariable(@RequestBody VariableHolder variable) {
-		PlugwineAssertionError.checkNotNull(variable);
+		PlugwineAssertionError.checkNotNull(variable,
+				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
 		logger.debug("Start update Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
 		VariableHolder variableHolder =  configurationVariableManager.updateVariable(variable);
@@ -90,8 +93,9 @@ public class TokensController {
 	}
 	
 	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.DELETE)
-	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody VariableHolder variable) {
-		PlugwineAssertionError.checkNotNull(variable);
+	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody(required=false) VariableHolder variable) {
+		PlugwineAssertionError.checkNotNull(variable,
+				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
 		logger.debug("Start delete Variable. name=" + variable.getParamName() + ", value=" + variable.getParamValue() + ".");
 		
 		VariableHolder variableHolder =  configurationVariableManager.deleteVariable(variable.getParamName());

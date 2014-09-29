@@ -16,8 +16,9 @@
         <property name="cacheSeconds" value="${bundle.cacheSeconds}" /> <!--  stale bundle cache after 2 minutes (testing value) -->
     </bean>
 
-    <bean id="businessMessageSource" class="com.plugwine.util.DefaultMessageSource">
+    <bean id="businessMessageSource" class="com.plugwine.i18n.DefaultMessageSource">
         <property name="bundle" ref="appBundle" />
+        <property name="defaultLocale" value="en_CA" />
     </bean>
     
    <!-- base class for the entity model manager -->

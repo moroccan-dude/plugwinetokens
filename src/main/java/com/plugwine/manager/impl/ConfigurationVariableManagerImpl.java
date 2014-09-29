@@ -85,7 +85,7 @@ implements ConfigurationVariableManager {
 	public VariableHolder deleteVariable(String varName)
 	{
 		ConfigurationVariable configurationVariable = getDao().getVariableByName(varName);
-		PlugwineAssertionError.checkNotNull(configurationVariable,getMessageSource().getMessage("variables.variable.notFound"));
+		PlugwineAssertionError.checkNotNull(configurationVariable,getMessageSource().getMessage("variables.variable.notFound",varName));
         
 		getDao().delete(configurationVariable);
 		
@@ -101,28 +101,13 @@ implements ConfigurationVariableManager {
         
         ConfigurationVariable variable = null;
 
-        ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
-        //hack
-        int sId = 5;//default
-        try {
-        	String serverId = name.substring(name.length()-3, name.length());
-        	sId = Integer.parseInt(serverId);
-		} catch (Exception  e) {
-			logger.warn("Hack of sId failed...make sure your variable name ends with a 3 digit number",e);
-		}
-        
-    	valValueId.setServerId(sId);
-    	valValueId.setConfigurationVariableId(10510);
-    	valValueId.setApplicationVersionStageActivityId(16912);
+      
     	
-    	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
-    	valValue.setId(valValueId);
-    	valValue.setValue(value);
-    	valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
+    	//valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
     	
     	variable= new ConfigurationVariable();
     	variable.setName(name);
-    	variable.getConfigurationVariableValues().add(valValue);
+    	
     	Component component = getServiceFactory().getComponentManager().get(3951);
     	variable.setComponent(component);
     	variable.setDescription("some Dummy Descr");
@@ -132,6 +117,26 @@ implements ConfigurationVariableManager {
     	variable.setTypeId(1);
     	variable = getDao().persist(variable);
 
+    	ConfigurationVariableValueId valValueId = new ConfigurationVariableValueId();
+          //hack
+          int sId = 5;//default
+          try {
+          	String serverId = name.substring(name.length()-3, name.length());
+          	sId = Integer.parseInt(serverId);
+  		} catch (Exception  e) {
+  			logger.warn("Hack of sId failed...make sure your variable name ends with a 3 digit number",e);
+  		}
+          
+      	valValueId.setServerId(sId);
+      	valValueId.setConfigurationVariableId(variable.getId());
+      	valValueId.setApplicationVersionStageActivityId(16912);
+      	
+    	ConfigurationVariableValue valValue = new ConfigurationVariableValue();
+    	valValue.setId(valValueId);
+    	valValue.setValue(value);
+    	variable.getConfigurationVariableValues().add(valValue);
+    	valValue = getServiceFactory().getConfigurationVariableValueManager().persist(valValue);
+    	
     	return  new VariableHolder(variable.getId(),(String)variable.getName(),formatVariableValues(variable));
 	}
 

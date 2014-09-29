@@ -1,6 +1,6 @@
 package com.plugwine.manager;
 
-import com.plugwine.util.IMessageSource;
+import com.plugwine.i18n.IMessageSource;
 
 
 /**
