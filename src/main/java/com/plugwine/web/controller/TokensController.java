@@ -1,5 +1,11 @@
 package com.plugwine.web.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static com.plugwine.web.controller.TokensURIConstants.CTX_VARIABLE;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.plugwine.domain.dto.VariableDto;
@@ -30,7 +35,7 @@ public class TokensController {
 	@Autowired
 	private ConfigurationVariableManager configurationVariableManager;
 	
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.GET)
+	@RequestMapping(value = CTX_VARIABLE, method = GET)
 	public @ResponseBody PlugwineResultModel getAllVariables() {
 		logger.debug("Start getAllTokens.");
 		
@@ -44,7 +49,7 @@ public class TokensController {
 	 * @param variableName
 	 * @return
 	 */
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE_NAME, method = RequestMethod.GET)
+	@RequestMapping(value = CTX_VARIABLE + "/{name}", method = GET)
 	public @ResponseBody PlugwineResultModel getVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
@@ -60,7 +65,7 @@ public class TokensController {
 	 * @param variableName
 	 * @return
 	 */
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE_SEARCH_NAME, method = RequestMethod.GET)
+	@RequestMapping(value = CTX_VARIABLE + "/search/{name}", method = GET)
 	public @ResponseBody PlugwineResultModel findVariable(@PathVariable("name") String variableName) {
 		logger.debug("Start getVariable. name=" + variableName + ".");
 		
@@ -70,7 +75,7 @@ public class TokensController {
 	
 	//@Requestbody converts the contents of incoming request body to method's parameter object using the messageconverters
 	//Same with @responsebody
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.POST)
+	@RequestMapping(value = CTX_VARIABLE, method = POST)
 	public @ResponseBody PlugwineResultModel createVariable(@RequestBody VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
@@ -81,7 +86,7 @@ public class TokensController {
 		return PlugwineResultModel.successResult(variableDto);
 	}
 	
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.PUT)
+	@RequestMapping(value = CTX_VARIABLE, method = PUT)
 	public @ResponseBody PlugwineResultModel updateVariable(@RequestBody VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
@@ -92,7 +97,7 @@ public class TokensController {
 		return PlugwineResultModel.successResult(variableDto);
 	}
 	
-	@RequestMapping(value = TokensURIConstants.CTX_VARIABLE, method = RequestMethod.DELETE)
+	@RequestMapping(value = CTX_VARIABLE, method = DELETE)
 	public @ResponseBody PlugwineResultModel deleteVariable(@RequestBody(required=false) VariableDto variable) {
 		PlugwineAssertionError.checkNotNull(variable,
 				new EntityNotFoundException(getMessageSource().getMessage("general.error.missingRequiredParam","variable")));
