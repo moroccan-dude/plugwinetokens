@@ -40,4 +40,9 @@
         from ConfigurationVariable as entity
         where entity.name = :name
     </query>
+     <query name="getConfigurationVariableByNameEager">
+        select variable from ConfigurationVariable as variable
+        left join fetch variable.configurationVariableValues
+        where variable.name = :name
+    </query>
 </hibernate-mapping>

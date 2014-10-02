@@ -57,7 +57,10 @@ implements ConfigurationVariableManager {
 	public VariableDto findVariableByName(String name)
 	{
 		PlugwineAssertionError.checkNotNull(name,getMessageSource().getMessage("variables.variable.alreadyExist"));
-		ConfigurationVariable configurationVariable = getDao().getVariableByName(name);
+		ConfigurationVariable configurationVariable = 
+				getUnique(
+						"getConfigurationVariableByNameEager",new String[]{"name"},new String[]{name});//to load the variable eagerly
+				//getDao().getVariableByName(name); // to load the variable lazily and let the  formatVariableValues load it, since we are in the same session...
 		if(configurationVariable==null)
 			return null;
 
